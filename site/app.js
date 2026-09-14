@@ -1,6 +1,7 @@
 (() => {
   const island = document.getElementById("island");
   const hint = document.getElementById("island-hint");
+  const desktop = island?.closest(".desktop");
   const nav = document.querySelector(".nav");
   if (!island)
     return;
@@ -22,6 +23,8 @@
   const show = next => {
     i = (next + states.length) % states.length;
     island.dataset.state = states[i].id;
+    if (desktop)
+      desktop.dataset.island = states[i].id;
     island.setAttribute("aria-label", `Eave preview: ${states[i].label}. Click to morph.`);
     if (hint)
       hint.lastChild.textContent = ` ${states[i].label} — click to morph.`;
