@@ -379,7 +379,7 @@ code {
 .island[data-state="media"] { --island-w: 11.2rem; }
 .island[data-state="charging"] { --island-w: 13.5rem; }
 .island[data-state="volume"] { --island-w: 17rem; }
-.island[data-state="bluetooth"] { --island-w: 15.5rem; --island-h: 2.75rem; --island-r: 1.375rem; }
+.island[data-state="bluetooth"] { --island-w: 15.5rem; }
 .island[data-state="privacy"] { --island-w: 11.2rem; }
 .island[data-state="expanded"] {
   --island-w: 21.5rem;
@@ -437,11 +437,11 @@ code {
 }
 
 .face-media { justify-content: space-between; padding-inline: 0.45rem; }
-.face-charging { justify-content: space-between; font-size: 0.78rem; font-weight: 700; }
+.face-charging,
+.face-bt { justify-content: space-between; font-size: 0.78rem; font-weight: 700; }
 .face-trail { display: flex; align-items: center; gap: 0.35rem; }
 .face-trail svg { width: 0.95rem; height: 0.95rem; }
-.face-title { font-weight: 700; font-size: 0.78rem; }
-.face-sub { display: block; font-size: 0.62rem; opacity: 0.55; font-weight: 600; }
+.face-title { font-weight: 700; font-size: 0.78rem; white-space: nowrap; }
 
 .face-volume { gap: 0.55rem; font-variant-numeric: tabular-nums; font-weight: 700; font-size: 0.8rem; }
 .osd-icon, .bt-icon, .face-privacy svg { width: 1.05rem; height: 1.05rem; flex: none; }
@@ -460,8 +460,6 @@ code {
   border-radius: inherit;
 }
 
-.face-bt { justify-content: flex-start; gap: 0.55rem; }
-.bt-copy { display: flex; flex-direction: column; align-items: flex-start; line-height: 1.15; }
 .face-privacy { gap: 0.8rem; }
 
 .face-expanded {
