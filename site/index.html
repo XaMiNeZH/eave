@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Eave — a recess at the top of the desktop</title>
+  <title>Eave, a recess at the top of the desktop</title>
   <meta name="description" content="Eave is a GNOME Shell extension for Fedora. A black notch in the top panel that morphs for media, charging, volume, Bluetooth, and privacy. GPL-3.0.">
   <meta name="theme-color" content="#0c0b09">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
@@ -19,7 +19,7 @@
       <span class="brand-word">eave</span>
     </a>
     <nav class="nav-links" aria-label="Primary">
-      <a class="nav-text" href="https://github.com/XaMiNeZH/dynamic-island-linux">GitHub</a>
+      <a class="nav-text" href="https://github.com/XaMiNeZH/eave">GitHub</a>
       <a class="btn btn-nav" href="#install">Install</a>
     </nav>
   </header>
@@ -40,7 +40,7 @@
             <span class="btn-label">Install on Fedora</span>
             <svg class="btn-arrow" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M4.5 12h13.25M12.75 5.25 19.5 12l-6.75 6.75"/></svg>
           </a>
-          <a class="btn btn-ghost" href="https://github.com/XaMiNeZH/dynamic-island-linux">GitHub</a>
+          <a class="btn btn-ghost" href="https://github.com/XaMiNeZH/eave">GitHub</a>
         </div>
       </div>
 
@@ -116,7 +116,7 @@
         </div>
         <p class="hint" id="island-hint">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M5.2 4.1c-.3-1.2 1.1-2 2-1.3L19.4 13c1 .8.5 2.4-.8 2.5l-5.1.1a1.4 1.4 0 0 0-1.2.7l-2.6 4.3c-.7 1.1-2.4.7-2.6-.6L5.2 4.1Z"/></svg>
-          Click the island — it morphs.
+          Click the island. It morphs.
         </p>
       </div>
     </section>
@@ -195,7 +195,7 @@
       <div class="story-copy">
         <p class="eyebrow">Not a dashboard</p>
         <h2>It sits in the panel.<br>The clock stays put.</h2>
-        <p class="lede">Eave is a standalone top-center overlay inside GNOME Shell — not the date menu, not a Hyprland layer-shell widget, not an Electron window. Mutter has no wlr-layer-shell, so the only way the island can live in the Fedora Wayland panel is in-process.</p>
+        <p class="lede">Eave is a standalone top-center overlay inside GNOME Shell (not the date menu, not a Hyprland layer-shell widget, not an Electron window). Mutter has no wlr-layer-shell, so the only way the island can live in the Fedora Wayland panel is in-process.</p>
         <p class="lede">Right-click the idle notch for the calendar. Notifications stay in GNOME’s native banners. Other MPRIS panel widgets hide so they do not sit behind the pill.</p>
       </div>
       <div class="bar-shot" aria-hidden="true">
@@ -230,7 +230,7 @@
         </div>
         <div>
           <h3>A compact charging pill</h3>
-          <p>Plug in and the island becomes a short pill with the percentage — then it recedes. Bluetooth does the same with the device name. Privacy (mic, camera, screen recording) stays as a compact activity while in use.</p>
+          <p>Plug in and the island becomes a short pill with the percentage, then it recedes. Bluetooth does the same with the device name. Privacy (mic, camera, screen recording) stays as a compact activity while in use.</p>
         </div>
       </article>
       <article class="moment">
@@ -243,7 +243,7 @@
         </div>
         <div>
           <h3>Volume, brightness, mute</h3>
-          <p>A thick-capsule HUD in the island instead of the stock GNOME OSD. Turn takeover off in settings if you want the original overlay back. Alignment sliders apply live — no logout.</p>
+          <p>A thick-capsule HUD in the island instead of the stock GNOME OSD. Turn takeover off in settings if you want the original overlay back. Alignment sliders apply live. No logout.</p>
         </div>
       </article>
     </section>
@@ -251,7 +251,7 @@
     <section class="install" id="install">
       <p class="eyebrow">Fedora Workstation</p>
       <h2>Install on Fedora</h2>
-      <p class="lede install-lede">Target: Fedora 44 (GNOME 50), also GNOME 49 and 51. Existing installs keep working — the extension UUID is still <code>dynamic-island@xaminezh.xyz</code>.</p>
+      <p class="lede install-lede">Target: Fedora 44 (GNOME 50), also GNOME 49 and 51. Existing installs keep working. The extension UUID is still <code>dynamic-island@xaminezh.xyz</code>.</p>
       <ol class="steps">
         <li>
           <h3>Install the tools</h3>
@@ -259,8 +259,8 @@
         </li>
         <li>
           <h3>Clone and install</h3>
-          <pre><code>git clone https://github.com/XaMiNeZH/dynamic-island-linux.git
-cd dynamic-island-linux
+          <pre><code>git clone https://github.com/XaMiNeZH/eave.git
+cd eave
 ./install.sh</code></pre>
         </li>
         <li>
@@ -279,7 +279,7 @@ cd dynamic-island-linux
 
   <footer class="footer">
     <div class="footer-links">
-      <a href="https://github.com/XaMiNeZH/dynamic-island-linux" aria-label="GitHub">
+      <a href="https://github.com/XaMiNeZH/eave" aria-label="GitHub">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2C6.5 2 2 6.6 2 12.2c0 4.5 2.9 8.3 6.9 9.6.5.1.7-.2.7-.5v-1.8c-2.8.6-3.4-1.4-3.4-1.4-.4-1.1-1.1-1.4-1.1-1.4-.9-.6.1-.6.1-.6 1 .1 1.5 1 1.5 1 .9 1.6 2.4 1.1 3 .9.1-.7.4-1.1.6-1.4-2.2-.3-4.6-1.1-4.6-5 0-1.1.4-2 1-2.7-.1-.3-.4-1.3.1-2.7 0 0 .8-.3 2.8 1a9.4 9.4 0 0 1 5 0c2-1.3 2.8-1 2.8-1 .5 1.4.2 2.4.1 2.7.6.7 1 1.6 1 2.7 0 3.9-2.3 4.7-4.6 5 .4.3.7 1 .7 2v2.9c0 .3.2.6.7.5 4-1.3 6.9-5.1 6.9-9.6C22 6.6 17.5 2 12 2z"/></svg>
       </a>
       <a href="LICENSE.txt">GPL-3.0</a>

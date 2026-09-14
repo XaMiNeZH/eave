@@ -29,7 +29,7 @@ echo
 
 if command -v gnome-extensions >/dev/null; then
     gnome-extensions enable "${UUID}" 2>/dev/null || true
-    echo "Settings (alignment, clock, timeouts) apply immediately — no logout."
+    echo "Settings (alignment, clock, timeouts) apply immediately. No logout."
     echo "Code changes need a fresh GNOME Shell process. Prefer a nested window:"
     echo "  ./tools/try.sh"
     echo "That keeps this session and your apps open. Log out only as a last resort, then:"

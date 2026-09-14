@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 # Open a nested GNOME Shell window with this extension installed.
-# Your current Wayland session stays open — no logout required.
+# Your current Wayland session stays open. No logout required.
 set -euo pipefail
 
 UUID="dynamic-island@xaminezh.xyz"

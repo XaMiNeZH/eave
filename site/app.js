@@ -25,10 +25,10 @@
 
   const hintFor = (state, playing) => {
     if (playing && mediaStates.has(state.id))
-      return ` ${state.label} — quiet demo loop.`;
+      return ` ${state.label}. Quiet demo loop.`;
     if (state.id === "media")
-      return ` ${state.label} — click to expand (plays a demo loop).`;
-    return ` ${state.label} — click to morph.`;
+      return ` ${state.label}. Click to expand (plays a demo loop).`;
+    return ` ${state.label}. Click to morph.`;
   };
 
   const show = (next, {fromUser = false} = {}) => {
