@@ -824,9 +824,24 @@ pre code {
   .nav-text { padding-inline: 0.7rem; font-size: 1rem; }
   .hero { padding-inline: 1.1rem; }
   .brand-word { font-size: 1.35rem; }
-  .activities, .clock { font-size: 0.68rem; }
   .sys { display: none; }
   .stage { border-radius: 1.4rem; }
+  /* Keep the island centered; hide Activities/clock so wide morphs don't collide. */
+  .panel-left,
+  .panel-right {
+    visibility: hidden;
+    min-width: 0;
+  }
+  .island {
+    max-width: calc(100% - 0.8rem);
+  }
+  .island[data-state="charging"] { --island-w: min(15.2rem, 78vw); }
+  .island[data-state="volume"] { --island-w: min(16.8rem, 84vw); }
+  .island[data-state="bluetooth"] { --island-w: min(16.5rem, 82vw); }
+  .island[data-state="expanded"] {
+    --island-w: min(23rem, 88vw);
+    --island-h: 5rem;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
