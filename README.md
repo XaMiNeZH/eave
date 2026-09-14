@@ -1,6 +1,12 @@
-# Dynamic Island for Fedora GNOME
+# Eave
 
-A native Apple-style Dynamic Island for GNOME Shell. It is a **standalone top-center overlay** — not the date menu and not a panel media widget — that morphs for media, volume, brightness, charging, Bluetooth, and privacy. Notifications stay in GNOME's native banners.
+A recess at the top of the desktop.
+
+An Apple-style Dynamic Island for GNOME Shell. It is a **standalone top-center overlay** — not the date menu and not a panel media widget — that morphs for media, volume, brightness, charging, Bluetooth, and privacy. Notifications stay in GNOME's native banners.
+
+The GNOME UUID is still `dynamic-island@xaminezh.xyz`, so existing Fedora installs keep working. Settings schema keys are unchanged.
+
+Marketing site (static): [`site/index.html`](site/index.html).
 
 This is a **GNOME Shell extension**, not an Electron overlay and not a Hyprland layer-shell widget. Mutter has no `wlr-layer-shell`, so the only way the island can sit in the panel on Fedora Wayland is inside the Shell itself.
 
@@ -61,7 +67,7 @@ Compact and expanded media tint the six-bar waveform from album art. Bars grow f
 
 ## Preferences
 
-Open **Extensions → Dynamic Island → Settings** (or `gnome-extensions prefs dynamic-island@xaminezh.xyz`):
+Open **Extensions → Eave → Settings** (or `gnome-extensions prefs dynamic-island@xaminezh.xyz`):
 
 - OSD takeover (notifications stay native)
 - Hide panel media-controls (date menu stays)
@@ -110,7 +116,7 @@ The regular headless tests cover the activity stack, motion math, geometry fit, 
 
 ## Why not the other islands
 
-Projects built for Hyprland/Quickshell look like a Dynamic Island but do not attach to GNOME. Electron/GTK windows cannot live in the GNOME panel on Wayland. Dashboard-style GNOME notches (weather, notes, file shelves) are a different product. This extension stays in-process, uses `St`/`Clutter`, and talks to `MessageTray`, MPRIS, UPower, BlueZ, and `osdWindowManager` directly.
+Projects built for Hyprland/Quickshell look like an Apple Dynamic Island but do not attach to GNOME. Electron/GTK windows cannot live in the GNOME panel on Wayland. Dashboard-style GNOME notches (weather, notes, file shelves) are a different product. This extension stays in-process, uses `St`/`Clutter`, and talks to `MessageTray`, MPRIS, UPower, BlueZ, and `osdWindowManager` directly.
 
 ## License
 

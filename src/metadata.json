@@ -1,7 +1,7 @@
 {
     "uuid": "dynamic-island@xaminezh.xyz",
-    "name": "Dynamic Island",
-    "description": "A native Apple-style Dynamic Island for GNOME. A standalone top-center notch that morphs for media, volume, brightness, charging, Bluetooth, and privacy events. Notifications stay native and the GNOME date menu stays in place.",
+    "name": "Eave",
+    "description": "Eave — a recess at the top of the desktop. A native Apple-style Dynamic Island for GNOME. A standalone top-center notch that morphs for media, volume, brightness, charging, Bluetooth, and privacy events. Notifications stay native and the GNOME date menu stays in place.",
     "shell-version": ["49", "50", "51"],
     "url": "https://github.com/XaMiNeZH/dynamic-island-linux",
     "version-name": "0.1.0",

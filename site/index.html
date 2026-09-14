@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Eave — a recess at the top of the desktop</title>
+  <meta name="description" content="Eave is a GNOME Shell extension for Fedora. A black notch in the top panel that morphs for media, charging, volume, Bluetooth, and privacy. GPL-3.0.">
+  <meta name="theme-color" content="#0c0b09">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="fonts/outfit-700.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="nav" id="top">
+    <a class="brand" href="#top" aria-label="Eave home">
+      <svg class="brand-mark" viewBox="0 0 227 74" aria-hidden="true">
+        <path fill="currentColor" fill-rule="evenodd" d="M37 0H190A37 37 0 0 1 227 37 37 37 0 0 1 190 74H37A37 37 0 0 1 0 37 37 37 0 0 1 37 0ZM113.5-71m-92 0a92 92 0 1 1 184 0a92 92 0 1 1-184 0Z"/>
+      </svg>
+      <span class="brand-word">eave</span>
+    </a>
+    <nav class="nav-links" aria-label="Primary">
+      <a class="nav-text" href="https://github.com/XaMiNeZH/dynamic-island-linux">GitHub</a>
+      <a class="btn btn-nav" href="#install">Install</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="hero-kicker rise" style="--d:80ms">GNOME Shell · Fedora</p>
+        <h1 class="hero-lockup rise" style="--d:160ms">
+          <svg class="hero-mark" viewBox="0 0 227 74" role="img" aria-label="Eave mark">
+            <path fill="currentColor" fill-rule="evenodd" d="M37 0H190A37 37 0 0 1 227 37 37 37 0 0 1 190 74H37A37 37 0 0 1 0 37 37 37 0 0 1 37 0ZM113.5-71m-92 0a92 92 0 1 1 184 0a92 92 0 1 1-184 0Z"/>
+          </svg>
+          <span class="hero-name">eave</span>
+        </h1>
+        <p class="tagline rise" style="--d:280ms">A recess at the top of the desktop.</p>
+        <div class="hero-actions rise" style="--d:400ms">
+          <a class="btn btn-solid" href="#install">
+            <span class="btn-label">Install on Fedora</span>
+            <svg class="btn-arrow" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M4.5 12h13.25M12.75 5.25 19.5 12l-6.75 6.75"/></svg>
+          </a>
+          <a class="btn btn-ghost" href="https://github.com/XaMiNeZH/dynamic-island-linux">GitHub</a>
+        </div>
+      </div>
+
+      <div class="stage-wrap rise" style="--d:560ms">
+        <div class="stage" aria-hidden="false">
+          <div class="desktop">
+            <div class="panel">
+              <div class="panel-side panel-left">
+                <span class="activities">Activities</span>
+              </div>
+              <div class="panel-mid">
+                <button type="button" class="island" id="island" data-state="idle" aria-label="Preview of Eave in the GNOME panel. Click to morph.">
+                  <span class="face" data-face="idle"></span>
+                  <span class="face face-media" data-face="media">
+                    <span class="art" aria-hidden="true"></span>
+                    <span class="eq" aria-hidden="true">
+                      <i></i><i></i><i></i><i></i><i></i><i></i>
+                    </span>
+                  </span>
+                  <span class="face face-charging" data-face="charging">
+                    <span class="face-title">Charging</span>
+                    <span class="face-trail">
+                      <span>67%</span>
+                      <svg viewBox="0 0 16 16" aria-hidden="true"><path fill="#30d158" d="M9.2 1.2 4 9h3.2L6.8 14.8 12 7H8.8z"/></svg>
+                    </span>
+                  </span>
+                  <span class="face face-volume" data-face="volume">
+                    <svg class="osd-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M4 9v6h4l5 4V5L8 9H4zm11.5 3a3.5 3.5 0 0 0-1.8-3.1v6.2A3.5 3.5 0 0 0 15.5 12z"/></svg>
+                    <span class="hud"><span class="hud-fill"></span></span>
+                    <span class="pct">64</span>
+                  </span>
+                  <span class="face face-bt" data-face="bluetooth">
+                    <svg class="bt-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2v7.6L8.7 6.3 7.3 7.7 11.6 12l-4.3 4.3 1.4 1.4L12 14.4V22l7-5.5-4.1-3.2L19 10.1 12 2zm2 13.1 1.6 1.3L14 18.1v-3zm0-8.2V8.9l1.6-1.3L14 6.9z"/></svg>
+                    <span class="bt-copy">
+                      <span class="face-title">WH-1000XM5</span>
+                      <span class="face-sub">Bluetooth</span>
+                    </span>
+                  </span>
+                  <span class="face face-privacy" data-face="privacy">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 15a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7zm0 2c-4 0-7.5-2.4-9-6 1.5-3.6 5-6 9-6s7.5 2.4 9 6c-1.5 3.6-5 6-9 6z"/></svg>
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 14a3 3 0 0 0 3-3V6a3 3 0 1 0-6 0v5a3 3 0 0 0 3 3zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.9V21h2v-3.1A7 7 0 0 0 19 11h-2z"/></svg>
+                  </span>
+                  <span class="face face-expanded" data-face="expanded">
+                    <span class="art art-lg" aria-hidden="true"></span>
+                    <span class="now">
+                      <span class="now-head">
+                        <span class="now-text">
+                          <span class="now-title">Night Drive</span>
+                          <span class="now-artist">Kiasmos</span>
+                        </span>
+                        <span class="eq eq-accent" aria-hidden="true">
+                          <i></i><i></i><i></i><i></i><i></i><i></i>
+                        </span>
+                      </span>
+                      <span class="seek">
+                        <span>1:12</span>
+                        <span class="seek-rail"><span class="seek-fill"></span></span>
+                        <span>−2:04</span>
+                      </span>
+                    </span>
+                  </span>
+                </button>
+              </div>
+              <div class="panel-side panel-right">
+                <span class="sys" aria-hidden="true">
+                  <i class="sys-wifi"></i>
+                  <i class="sys-vol"></i>
+                  <i class="sys-batt"></i>
+                </span>
+                <span class="clock">Mon 14&ensp;20:10</span>
+              </div>
+            </div>
+            <div class="wallpaper"></div>
+          </div>
+        </div>
+        <p class="hint" id="island-hint">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M5.2 4.1c-.3-1.2 1.1-2 2-1.3L19.4 13c1 .8.5 2.4-.8 2.5l-5.1.1a1.4 1.4 0 0 0-1.2.7l-2.6 4.3c-.7 1.1-2.4.7-2.6-.6L5.2 4.1Z"/></svg>
+          Click the island — it morphs.
+        </p>
+      </div>
+    </section>
+
+    <section class="beats" id="what" aria-labelledby="beats-title">
+      <h2 id="beats-title" class="sr-only">What Eave does</h2>
+      <div class="beat-grid">
+        <article class="beat">
+          <svg class="beat-icon" viewBox="0 0 112 72" aria-hidden="true">
+            <circle cx="38" cy="36" r="20"/>
+            <circle class="beat-orb" cx="78" cy="36" r="14"/>
+          </svg>
+          <h3>One pill,<br>many shapes</h3>
+        </article>
+        <article class="beat">
+          <svg class="beat-icon" viewBox="0 0 48 48" aria-hidden="true">
+            <rect x="6" y="10" width="36" height="22" rx="8" fill="none" stroke="currentColor" stroke-width="2.4"/>
+            <path d="M16 32v6h16v-6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+          </svg>
+          <h3>Native<br>GNOME banners</h3>
+        </article>
+        <article class="beat">
+          <svg class="beat-icon" viewBox="0 0 48 48" aria-hidden="true">
+            <rect x="6" y="10" width="16" height="16" rx="5"/>
+            <g class="eq-icon" fill="currentColor">
+              <rect x="26" y="18" width="3" height="10" rx="1.5"/>
+              <rect x="31" y="14" width="3" height="14" rx="1.5"/>
+              <rect x="36" y="16" width="3" height="12" rx="1.5"/>
+            </g>
+          </svg>
+          <h3>Now playing<br>in the bar</h3>
+        </article>
+        <article class="beat">
+          <svg class="beat-icon" viewBox="0 0 48 48" aria-hidden="true">
+            <rect x="10" y="14" width="22" height="20" rx="4"/>
+            <rect x="32" y="20" width="4" height="8" rx="1"/>
+            <path d="M19 18v12l8-6z" fill="#0c0b09"/>
+          </svg>
+          <h3>Charging<br>compact pill</h3>
+        </article>
+        <article class="beat">
+          <svg class="beat-icon" viewBox="0 0 48 48" aria-hidden="true">
+            <path d="M8 18v12h8l10 8V10L16 18H8z"/>
+            <path d="M32 18a8 8 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+          </svg>
+          <h3>Volume &amp;<br>brightness HUD</h3>
+        </article>
+        <article class="beat">
+          <svg class="beat-icon" viewBox="0 0 48 48" aria-hidden="true">
+            <path d="M24 8v11l-6-6-3 3 8 8-8 8 3 3 6-6v11l12-9-7-5 7-6z"/>
+          </svg>
+          <h3>Bluetooth<br>on connect</h3>
+        </article>
+        <article class="beat">
+          <svg class="beat-icon" viewBox="0 0 48 48" aria-hidden="true">
+            <circle cx="24" cy="22" r="6" fill="none" stroke="currentColor" stroke-width="2.4"/>
+            <path d="M8 22c3-8 9-13 16-13s13 5 16 13c-3 8-9 13-16 13S11 30 8 22z" fill="none" stroke="currentColor" stroke-width="2.4"/>
+          </svg>
+          <h3>Mic, camera,<br>recording</h3>
+        </article>
+        <article class="beat">
+          <svg class="beat-icon" viewBox="0 0 48 48" aria-hidden="true">
+            <rect x="6" y="12" width="36" height="8" rx="4"/>
+            <rect x="16" y="14.5" width="16" height="3" rx="1.5" fill="#0c0b09"/>
+            <path d="M10 26h28M10 32h18" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" fill="none"/>
+          </svg>
+          <h3>Lives in the<br>GNOME panel</h3>
+        </article>
+      </div>
+      <div class="beats-cta">
+        <a class="btn btn-solid" href="#install">Install on Fedora</a>
+      </div>
+    </section>
+
+    <section class="panel-story" id="panel">
+      <div class="story-copy">
+        <p class="eyebrow">Not a dashboard</p>
+        <h2>It sits in the panel.<br>The clock stays put.</h2>
+        <p class="lede">Eave is a standalone top-center overlay inside GNOME Shell — not the date menu, not a Hyprland layer-shell widget, not an Electron window. Mutter has no wlr-layer-shell, so the only way the island can live in the Fedora Wayland panel is in-process.</p>
+        <p class="lede">Right-click the idle notch for the calendar. Notifications stay in GNOME’s native banners. Other MPRIS panel widgets hide so they do not sit behind the pill.</p>
+      </div>
+      <div class="bar-shot" aria-hidden="true">
+        <div class="bar-shot-inner">
+          <span class="bar-left">Activities</span>
+          <span class="bar-island"></span>
+          <span class="bar-right">Mon 14&ensp;20:10</span>
+        </div>
+        <p class="bar-caption">Idle notch, 88×34, nested in the top bar.</p>
+      </div>
+    </section>
+
+    <section class="moments" aria-label="Island states">
+      <article class="moment">
+        <div class="moment-visual">
+          <div class="mini-island is-media">
+            <span class="art"></span>
+            <span class="eq"><i></i><i></i><i></i><i></i><i></i><i></i></span>
+          </div>
+        </div>
+        <div>
+          <h3>Media, compact then expanded</h3>
+          <p>Album art and a six-bar waveform while it plays. Hover shows a filled play/pause that actually toggles. Click opens a 344×84 now-playing panel: marquee title, art-tinted waves, capsule scrubber, transport.</p>
+        </div>
+      </article>
+      <article class="moment">
+        <div class="moment-visual">
+          <div class="mini-island is-charge">
+            <span>Charging</span>
+            <span class="charge-pct">67%</span>
+          </div>
+        </div>
+        <div>
+          <h3>A compact charging pill</h3>
+          <p>Plug in and the island becomes a short pill with the percentage — then it recedes. Bluetooth does the same with the device name. Privacy (mic, camera, screen recording) stays as a compact activity while in use.</p>
+        </div>
+      </article>
+      <article class="moment">
+        <div class="moment-visual">
+          <div class="mini-island is-osd">
+            <span class="osd-glyph"></span>
+            <span class="hud"><span class="hud-fill"></span></span>
+            <span>48</span>
+          </div>
+        </div>
+        <div>
+          <h3>Volume, brightness, mute</h3>
+          <p>A thick-capsule HUD in the island instead of the stock GNOME OSD. Turn takeover off in settings if you want the original overlay back. Alignment sliders apply live — no logout.</p>
+        </div>
+      </article>
+    </section>
+
+    <section class="install" id="install">
+      <p class="eyebrow">Fedora Workstation</p>
+      <h2>Install on Fedora</h2>
+      <p class="lede install-lede">Target: Fedora 44 (GNOME 50), also GNOME 49 and 51. Existing installs keep working — the extension UUID is still <code>dynamic-island@xaminezh.xyz</code>.</p>
+      <ol class="steps">
+        <li>
+          <h3>Install the tools</h3>
+          <pre><code>sudo dnf install gnome-extensions-app glib2 make zip</code></pre>
+        </li>
+        <li>
+          <h3>Clone and install</h3>
+          <pre><code>git clone https://github.com/XaMiNeZH/dynamic-island-linux.git
+cd dynamic-island-linux
+./install.sh</code></pre>
+        </li>
+        <li>
+          <h3>Try it without logging out</h3>
+          <p>Wayland cannot reload extension code inside the running Shell. Open a nested GNOME window instead:</p>
+          <pre><code>sudo dnf install mutter-devkit   # once, GNOME 49+
+./tools/try.sh</code></pre>
+          <p>If the island is missing in that window:</p>
+          <pre><code>gnome-extensions enable dynamic-island@xaminezh.xyz</code></pre>
+        </li>
+      </ol>
+      <p class="prefs-line">Settings live at <strong>Extensions → Eave → Settings</strong>, or <code>gnome-extensions prefs dynamic-island@xaminezh.xyz</code>.</p>
+      <p class="legal-note">GPL-3.0-or-later. GNOME Shell extensions that import <code>resource:///org/gnome/shell/</code> must be GPL-compatible. Eave is not affiliated with Apple.</p>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-links">
+      <a href="https://github.com/XaMiNeZH/dynamic-island-linux" aria-label="GitHub">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2C6.5 2 2 6.6 2 12.2c0 4.5 2.9 8.3 6.9 9.6.5.1.7-.2.7-.5v-1.8c-2.8.6-3.4-1.4-3.4-1.4-.4-1.1-1.1-1.4-1.1-1.4-.9-.6.1-.6.1-.6 1 .1 1.5 1 1.5 1 .9 1.6 2.4 1.1 3 .9.1-.7.4-1.1.6-1.4-2.2-.3-4.6-1.1-4.6-5 0-1.1.4-2 1-2.7-.1-.3-.4-1.3.1-2.7 0 0 .8-.3 2.8 1a9.4 9.4 0 0 1 5 0c2-1.3 2.8-1 2.8-1 .5 1.4.2 2.4.1 2.7.6.7 1 1.6 1 2.7 0 3.9-2.3 4.7-4.6 5 .4.3.7 1 .7 2v2.9c0 .3.2.6.7.5 4-1.3 6.9-5.1 6.9-9.6C22 6.6 17.5 2 12 2z"/></svg>
+      </a>
+      <a href="LICENSE.txt">GPL-3.0</a>
+    </div>
+    <div class="giant" aria-hidden="true">eave</div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

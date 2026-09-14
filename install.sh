@@ -41,5 +41,5 @@ fi
 
 echo
 echo "Right-click the pill to open the GNOME calendar. Try:"
-echo "  notify-send 'Dynamic Island' 'Hello from Fedora'"
+echo "  notify-send 'Eave' 'Hello from Fedora'"
 echo "  wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+"

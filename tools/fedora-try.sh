@@ -3,7 +3,7 @@
 # Manual checklist helpers for Fedora Workstation (GNOME 49–51).
 set -euo pipefail
 
-echo "Dynamic Island — Fedora try-this list"
+echo "Eave — Fedora try-this list"
 echo "0. Prefer:   ./tools/try.sh   (nested GNOME window, no logout)"
 echo "1. Or host:  ./install.sh     (settings apply live; code needs try.sh or one logout)"
 echo "2. Enable:   gnome-extensions enable dynamic-island@xaminezh.xyz"
@@ -18,5 +18,5 @@ echo "   The GNOME clock and stock OSD must come back; banners remain native."
 echo
 
 if command -v notify-send >/dev/null; then
-    notify-send "Dynamic Island" "This notification should remain a native GNOME banner."
+    notify-send "Eave" "This notification should remain a native GNOME banner."
 fi

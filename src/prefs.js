@@ -9,6 +9,7 @@ import {ExtensionPreferences, gettext as _} from 'resource:///org/gnome/Shell/Ex
 export default class DynamicIslandPreferences extends ExtensionPreferences {
     fillPreferencesWindow(window) {
         const settings = this.getSettings();
+        window.title = _('Eave');
         window.default_width = 560;
         window.default_height = 640;
 

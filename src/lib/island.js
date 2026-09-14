@@ -65,7 +65,7 @@ export const Island = GObject.registerClass({
         }
         this._capsule.set_pivot_point(0.5, 0);
         this._capsule.accessible_role = Atk.Role.PUSH_BUTTON;
-        this._capsule.accessible_name = extension.gettext('Dynamic Island');
+        this._capsule.accessible_name = extension.gettext('Eave');
 
         this._paint = new St.DrawingArea({
             reactive: false,
