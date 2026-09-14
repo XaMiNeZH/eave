@@ -1,6 +1,6 @@
 <p align="center">
-  <img src="brand/eave-mark.svg#gh-light-mode-only" alt="Eave" width="180">
-  <img src="brand/eave-mark-white.svg#gh-dark-mode-only" alt="Eave" width="180">
+  <img src="brand/eave-lockup.svg#gh-light-mode-only" alt="eave" width="320">
+  <img src="brand/eave-lockup-white.svg#gh-dark-mode-only" alt="eave" width="320">
 </p>
 
 # Eave

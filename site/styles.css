@@ -118,6 +118,13 @@ code {
   width: 2.55rem;
   height: auto;
   display: block;
+  overflow: visible;
+}
+
+.brand-mark path,
+.hero-mark path {
+  fill: currentColor;
+  stroke: none;
 }
 
 .nav-links {
@@ -214,6 +221,7 @@ code {
   width: min(14rem, 58vw);
   height: auto;
   color: var(--cream);
+  overflow: visible;
 }
 
 .hero-name {
