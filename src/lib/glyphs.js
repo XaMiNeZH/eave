@@ -16,6 +16,7 @@ export const Glyph = {
     bluetooth: 'bluetooth',
     camera: 'camera',
     record: 'record',
+    vpn: 'vpn',
 };
 
 export function mediaPlayGlyph(playing) {
@@ -223,6 +224,25 @@ export function paintGlyph(cr, kind, size, color = null) {
         cr.arc(u * 0.50, u * 0.50, u * 0.34, 0, Math.PI * 2);
         cr.fill();
         break;
+    case Glyph.vpn: {
+        cr.moveTo(u * 0.50, u * 0.08);
+        cr.lineTo(u * 0.86, u * 0.22);
+        cr.lineTo(u * 0.86, u * 0.50);
+        cr.curveTo(u * 0.86, u * 0.74, u * 0.70, u * 0.90, u * 0.50, u * 0.96);
+        cr.curveTo(u * 0.30, u * 0.90, u * 0.14, u * 0.74, u * 0.14, u * 0.50);
+        cr.lineTo(u * 0.14, u * 0.22);
+        cr.closePath();
+        cr.fill();
+        fillWhite(cr, 0);
+        cr.setSourceRGB(0, 0, 0);
+        roundedRect(cr, u * 0.38, u * 0.40, u * 0.24, u * 0.28, u * 0.04);
+        cr.fill();
+        cr.setLineWidth(Math.max(1.4, u * 0.08));
+        cr.arc(u * 0.50, u * 0.40, u * 0.10, Math.PI, 0);
+        cr.stroke();
+        fillWhite(cr);
+        break;
+    }
     default:
         cr.arc(u * 0.50, u * 0.50, u * 0.28, 0, Math.PI * 2);
         cr.fill();
