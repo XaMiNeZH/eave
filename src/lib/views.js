@@ -548,6 +548,7 @@ function marqueeLabel(text, styleClass, {expand = true, height = 18} = {}) {
         });
         widget.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
         widget.clutter_text.single_line_mode = true;
+        widget.clutter_text.clip_to_allocation = true;
         const optical = /subtitle|seek-time/.test(styleClass ?? '') ? 'text' : 'display';
         widget.style = typeCss(optical);
         return widget;
@@ -555,6 +556,8 @@ function marqueeLabel(text, styleClass, {expand = true, height = 18} = {}) {
 
     const first = copy();
     const second = copy();
+    first.clip_to_allocation = true;
+    second.clip_to_allocation = true;
     clip.add_child(first);
     clip.add_child(second);
 
@@ -587,14 +590,21 @@ function marqueeLabel(text, styleClass, {expand = true, height = 18} = {}) {
         cancel();
         first.translation_x = 0;
         second.translation_x = 0;
+        first.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
+        second.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
         const width = textWidth();
         first.set_position(0, 0);
         second.set_position(width + GAP, 0);
+        first.set_height(height);
+        second.set_height(height);
         const avail = clip.width || 0;
         if (!(width > avail + 2) || !(avail > 0)) {
             second.visible = false;
+            first.clutter_text.ellipsize = Pango.EllipsizeMode.END;
             return;
         }
+        first.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
+        second.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
         second.visible = true;
         const distance = width + GAP;
         const duration = Math.max(400, Math.round((distance / SPEED) * 1000));
@@ -709,6 +719,7 @@ export function buildMediaCompact(payload) {
 
     const root = splitChrome({leading: art, trailing: stack});
     root.add_style_class_name('dynamic-island-media-compact');
+    root.clip_to_allocation = true;
     root.suppressHoverScale = true;
     root._payload = payload;
     root._hover = false;
