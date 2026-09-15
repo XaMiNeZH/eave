@@ -14,6 +14,7 @@ import {BluetoothSource} from './lib/sources/bluetooth.js';
 import {MprisSource} from './lib/sources/mpris.js';
 import {OsdSource} from './lib/sources/osd.js';
 import {PrivacySource} from './lib/sources/privacy.js';
+import {islandAllowedInSession, islandOnLockScreen} from './lib/session.js';
 
 export default class DynamicIslandExtension extends Extension {
     enable() {
@@ -47,11 +48,19 @@ export default class DynamicIslandExtension extends Extension {
         this._mediaPrefId = this._settings.connect('changed::hide-panel-media-controls',
             () => this._syncPanelMedia());
 
-        this._sessionId = Main.sessionMode.connect('updated', () => {
+        this._sessionId = Main.sessionMode.connect('updated', () => this._syncSession());
+        this._syncSession();
+    }
+
+    _syncSession() {
+        const mode = Main.sessionMode;
+        const allowed = islandAllowedInSession(mode);
+        this._island?.setSessionVisible(allowed);
+        if (!allowed || islandOnLockScreen(mode))
             this._stack?.collapse();
+        if (allowed)
             this._island?.relayout(false);
-            this._syncPanelMedia();
-        });
+        this._syncPanelMedia();
     }
 
     _syncPanelMedia() {

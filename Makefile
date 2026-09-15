@@ -19,10 +19,12 @@ test:
 	gjs --module tests/test-glyphs.js
 	gjs --module tests/test-media-style.js
 	gjs --module tests/test-control-target.js
+	gjs --module tests/test-session.js
 	gjs --module tests/test-panel-media.js
 
 check: schemas test
 	python3 -c "import json; json.load(open('$(SRC)/metadata.json'))"
+	python3 -c "import json; m=json.load(open('$(SRC)/metadata.json')); assert 'unlock-dialog' in m.get('session-modes', [])"
 	test -f $(SRC)/extension.js
 	test -f $(SRC)/prefs.js
 	test -f $(SRC)/stylesheet.css

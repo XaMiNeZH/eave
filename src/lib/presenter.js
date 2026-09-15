@@ -6,6 +6,7 @@ import {Kind} from './activity-stack.js';
 import {geometryFor} from './constants.js';
 import {openDateMenu} from './clock.js';
 import {activityKey} from './motion.js';
+import {islandCanOpenCalendar} from './session.js';
 import {buildView} from './views.js';
 
 export class Presenter {
@@ -28,7 +29,11 @@ export class Presenter {
         });
 
         this._primaryId = island.connect('primary-click', () => this._onPrimary());
-        this._secondaryId = island.connect('secondary-click', () => openDateMenu(this._Main));
+        this._secondaryId = island.connect('secondary-click', () => {
+            if (!islandCanOpenCalendar(this._Main?.sessionMode))
+                return;
+            openDateMenu(this._Main);
+        });
 
         this._render(stack.current());
     }

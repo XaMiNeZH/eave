@@ -6,5 +6,6 @@
     "url": "https://github.com/XaMiNeZH/eave",
     "version-name": "0.1.0",
     "settings-schema": "org.gnome.shell.extensions.dynamic-island",
-    "gettext-domain": "dynamic-island"
+    "gettext-domain": "dynamic-island",
+    "session-modes": ["user", "unlock-dialog"]
 }

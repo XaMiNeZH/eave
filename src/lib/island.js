@@ -272,6 +272,19 @@ export const Island = GObject.registerClass({
         });
     }
 
+    setSessionVisible(visible) {
+        const show = visible !== false;
+        if (!this._capsule)
+            return;
+        this._capsule.visible = show;
+        this._capsule.reactive = show;
+        if (!show) {
+            this._capsule.remove_all_transitions();
+            this._capsule.scale_x = 1;
+            this._capsule.scale_y = 1;
+        }
+    }
+
     setContent(actor, {fade = true, delayReveal = false} = {}) {
         const prev = this._content.get_child();
         this._contentGen++;
