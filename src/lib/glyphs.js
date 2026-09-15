@@ -16,6 +16,8 @@ export const Glyph = {
     bluetooth: 'bluetooth',
     camera: 'camera',
     record: 'record',
+    airplane: 'airplane',
+    wifi: 'wifi',
 };
 
 export function mediaPlayGlyph(playing) {
@@ -221,6 +223,27 @@ export function paintGlyph(cr, kind, size, color = null) {
     case Glyph.record:
         cr.setSourceRGB(1, 0.27, 0.23);
         cr.arc(u * 0.50, u * 0.50, u * 0.34, 0, Math.PI * 2);
+        cr.fill();
+        break;
+    case Glyph.airplane:
+        cr.moveTo(u * 0.50, u * 0.08);
+        cr.lineTo(u * 0.58, u * 0.42);
+        cr.lineTo(u * 0.92, u * 0.50);
+        cr.lineTo(u * 0.58, u * 0.54);
+        cr.lineTo(u * 0.50, u * 0.92);
+        cr.lineTo(u * 0.42, u * 0.54);
+        cr.lineTo(u * 0.08, u * 0.50);
+        cr.lineTo(u * 0.42, u * 0.42);
+        cr.closePath();
+        cr.fill();
+        break;
+    case Glyph.wifi:
+        cr.setLineWidth(Math.max(1.6, u * 0.08));
+        cr.arc(u * 0.50, u * 0.78, u * 0.44, Math.PI * 1.15, Math.PI * 1.85);
+        cr.stroke();
+        cr.arc(u * 0.50, u * 0.78, u * 0.28, Math.PI * 1.15, Math.PI * 1.85);
+        cr.stroke();
+        cr.arc(u * 0.50, u * 0.78, u * 0.08, 0, Math.PI * 2);
         cr.fill();
         break;
     default:

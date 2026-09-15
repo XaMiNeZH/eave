@@ -79,6 +79,10 @@ export default class DynamicIslandPreferences extends ExtensionPreferences {
         group.add(this._switch(settings, 'enable-battery', _('Charging'), null));
         group.add(this._switch(settings, 'enable-bluetooth', _('Bluetooth connected'), null));
         group.add(this._switch(settings, 'enable-privacy', _('Microphone, camera, and screen recording'), null));
+        group.add(this._switch(settings, 'enable-airplane', _('Airplane mode'),
+            _('Needs org.gnome.SettingsDaemon.Rfkill on the session bus.')));
+        group.add(this._switch(settings, 'enable-wifi', _('Wi-Fi connecting'),
+            _('Needs NetworkManager. Hidden while associating completes.')));
         page.add(group);
         return page;
     }
