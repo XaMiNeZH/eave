@@ -310,6 +310,15 @@
     spacing: 0;
 }
 
+.dynamic-island-power {
+    spacing: 0;
+    min-width: 0;
+}
+
+.dynamic-island-power .dynamic-island-title {
+    min-width: 0;
+}
+
 .dynamic-island-charging-trailing {
     spacing: 6px;
 }
