@@ -15,6 +15,7 @@ import {
     paintGlyph,
 } from './glyphs.js';
 import {requestPalette} from './palette-load.js';
+import {privacyHeadline} from './privacy.js';
 import {FALLBACK_PALETTE, mixHex} from './palette.js';
 import {
     displayedPlaybackUs,
@@ -1006,6 +1007,22 @@ export function buildChargingView(payload) {
     return root;
 }
 
+export function buildFocusView() {
+    const title = label('Do Not Disturb', 'dynamic-island-title dynamic-island-focus-title');
+    const glyph = glyphActor(Glyph.focus, 16, '#bf5af2');
+    const root = new St.BoxLayout({
+        style_class: 'dynamic-island-focus',
+        x_expand: true,
+        y_expand: true,
+        y_align: Clutter.ActorAlign.CENTER,
+    });
+    root.clip_to_allocation = true;
+    root.add_child(title);
+    root.add_child(new St.Widget({x_expand: true, height: 1}));
+    root.add_child(glyph);
+    return root;
+}
+
 export function buildBluetoothView(payload) {
     const title = label(payload?.name ? payload.name : 'Connected', 'dynamic-island-title');
     const sub = label('Bluetooth', 'dynamic-island-subtitle');
@@ -1028,20 +1045,32 @@ export function buildBluetoothView(payload) {
 }
 
 export function buildPrivacyView(payload) {
-    const cam = payload?.camera
-        ? glyphActor(Glyph.camera, 14)
-        : new St.Widget({width: 1, height: 1});
-    const mic = payload?.mic
-        ? glyphActor(Glyph.mic, 14)
-        : new St.Widget({width: 1, height: 1});
-    const root = splitChrome({leading: cam, trailing: mic});
+    const title = label(privacyHeadline(payload), 'dynamic-island-title');
+    const trailing = new St.BoxLayout({
+        style_class: 'dynamic-island-privacy-trailing',
+        y_align: Clutter.ActorAlign.CENTER,
+    });
+    const syncGlyphs = next => {
+        trailing.destroy_all_children();
+        if (next?.camera)
+            trailing.add_child(glyphActor(Glyph.camera, 16));
+        if (next?.mic)
+            trailing.add_child(glyphActor(Glyph.mic, 16, '#ff453a'));
+    };
+    syncGlyphs(payload);
+    const root = new St.BoxLayout({
+        style_class: 'dynamic-island-privacy',
+        x_expand: true,
+        y_expand: true,
+        y_align: Clutter.ActorAlign.CENTER,
+    });
+    root.clip_to_allocation = true;
+    root.add_child(title);
+    root.add_child(new St.Widget({x_expand: true, height: 1}));
+    root.add_child(trailing);
     root.update = next => {
-        root.leading.replace(next?.camera
-            ? glyphActor(Glyph.camera, 14)
-            : new St.Widget({width: 1, height: 1}));
-        root.trailing.replace(next?.mic
-            ? glyphActor(Glyph.mic, 14)
-            : new St.Widget({width: 1, height: 1}));
+        title.text = privacyHeadline(next);
+        syncGlyphs(next);
     };
     return root;
 }
@@ -1107,6 +1136,8 @@ export function buildView(activity, clockText) {
         return buildOsdView({...payload, kind});
     case Kind.CHARGING:
         return buildChargingView(payload);
+    case Kind.FOCUS:
+        return buildFocusView();
     case Kind.BLUETOOTH:
         return buildBluetoothView(payload);
     case Kind.PRIVACY:

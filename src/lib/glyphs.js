@@ -16,6 +16,7 @@ export const Glyph = {
     bluetooth: 'bluetooth',
     camera: 'camera',
     record: 'record',
+    focus: 'focus',
 };
 
 export function mediaPlayGlyph(playing) {
@@ -221,6 +222,13 @@ export function paintGlyph(cr, kind, size, color = null) {
     case Glyph.record:
         cr.setSourceRGB(1, 0.27, 0.23);
         cr.arc(u * 0.50, u * 0.50, u * 0.34, 0, Math.PI * 2);
+        cr.fill();
+        break;
+    case Glyph.focus:
+        cr.arc(u * 0.46, u * 0.48, u * 0.33, 0, Math.PI * 2);
+        cr.fill();
+        cr.setSourceRGB(0, 0, 0);
+        cr.arc(u * 0.60, u * 0.36, u * 0.30, 0, Math.PI * 2);
         cr.fill();
         break;
     default:

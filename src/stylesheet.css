@@ -310,6 +310,25 @@
     spacing: 0;
 }
 
+.dynamic-island-focus {
+    spacing: 0;
+    min-width: 0;
+}
+
+.dynamic-island-focus .dynamic-island-title,
+.dynamic-island-privacy .dynamic-island-title {
+    min-width: 0;
+}
+
+.dynamic-island-privacy {
+    spacing: 0;
+    min-width: 0;
+}
+
+.dynamic-island-privacy-trailing {
+    spacing: 8px;
+}
+
 .dynamic-island-charging-trailing {
     spacing: 6px;
 }
