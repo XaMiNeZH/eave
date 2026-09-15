@@ -300,6 +300,87 @@
 
 .dynamic-island-media-expanded {
     spacing: 10px;
+    min-width: 0;
+}
+
+.dynamic-island-media-left {
+    spacing: 5px;
+    min-width: 0;
+}
+
+.dynamic-island-media-volume {
+    spacing: 2px;
+    min-width: 22px;
+}
+
+.dynamic-island-output {
+    padding: 0;
+    background-color: transparent;
+    min-width: 0;
+    height: 12px;
+}
+
+.dynamic-island-output:hover {
+    background-color: rgba(255, 255, 255, 0.08);
+}
+
+.dynamic-island-output-label {
+    font-weight: 500;
+    font-size: 9px;
+    color: rgba(255, 255, 255, 0.62);
+    min-width: 0;
+}
+
+.dynamic-island-sink-list {
+    spacing: 1px;
+    min-width: 0;
+}
+
+.dynamic-island-sink-row {
+    padding: 1px 4px;
+    background-color: transparent;
+    border-radius: 6px;
+    height: 16px;
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.78);
+    min-width: 0;
+}
+
+.dynamic-island-sink-row:hover {
+    background-color: rgba(255, 255, 255, 0.10);
+}
+
+.dynamic-island-sink-row.is-active {
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.dynamic-island-icon-button.is-volume-mute {
+    width: 22px;
+    height: 18px;
+    min-width: 22px;
+    min-height: 18px;
+    border-radius: 9px;
+    padding: 1px;
+}
+
+.dynamic-island-volume {
+    width: 8px;
+    min-width: 8px;
+    height: 32px;
+    min-height: 32px;
+}
+
+.dynamic-island-volume .dynamic-island-seek-rail {
+    background-color: rgba(255, 255, 255, 0.24);
+    border-radius: 2px;
+    width: 3px;
+}
+
+.dynamic-island-volume .dynamic-island-seek-fill {
+    background-color: #ffffff;
+    border-radius: 2px;
+    width: 3px;
 }
 
 .dynamic-island-system {
