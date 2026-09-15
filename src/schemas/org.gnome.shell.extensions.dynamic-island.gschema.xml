@@ -18,6 +18,11 @@
       <default>true</default>
       <summary>Charging events</summary>
     </key>
+    <key name="enable-low-battery" type="b">
+      <default>true</default>
+      <summary>Low battery</summary>
+      <description>Show a compact pill when UPower reports a discharging low or critical warning. Does not replace the charging face.</description>
+    </key>
     <key name="enable-bluetooth" type="b">
       <default>true</default>
       <summary>Bluetooth connect events</summary>

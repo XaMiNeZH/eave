@@ -13,6 +13,7 @@ export const Glyph = {
     micMuted: 'mic-muted',
     battery: 'battery',
     batteryCharge: 'battery-charge',
+    batteryLow: 'battery-low',
     bluetooth: 'bluetooth',
     camera: 'camera',
     record: 'record',
@@ -171,7 +172,8 @@ export function paintGlyph(cr, kind, size, color = null) {
         break;
     }
     case Glyph.battery:
-    case Glyph.batteryCharge: {
+    case Glyph.batteryCharge:
+    case Glyph.batteryLow: {
         roundedRect(cr, u * 0.08, u * 0.28, u * 0.72, u * 0.44, u * 0.08);
         cr.setLineWidth(Math.max(1.4, u * 0.08));
         cr.stroke();
