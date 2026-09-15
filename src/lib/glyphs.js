@@ -16,6 +16,7 @@ export const Glyph = {
     bluetooth: 'bluetooth',
     camera: 'camera',
     record: 'record',
+    nightLight: 'night-light',
 };
 
 export function mediaPlayGlyph(playing) {
@@ -222,6 +223,15 @@ export function paintGlyph(cr, kind, size, color = null) {
         cr.setSourceRGB(1, 0.27, 0.23);
         cr.arc(u * 0.50, u * 0.50, u * 0.34, 0, Math.PI * 2);
         cr.fill();
+        break;
+    case Glyph.nightLight:
+        cr.arc(u * 0.46, u * 0.50, u * 0.34, 0, Math.PI * 2);
+        cr.fill();
+        fillWhite(cr, 0);
+        cr.setSourceRGB(0, 0, 0);
+        cr.arc(u * 0.64, u * 0.40, u * 0.26, 0, Math.PI * 2);
+        cr.fill();
+        fillWhite(cr);
         break;
     default:
         cr.arc(u * 0.50, u * 0.50, u * 0.28, 0, Math.PI * 2);
