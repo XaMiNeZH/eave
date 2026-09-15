@@ -17,6 +17,7 @@ import {
 } from '../src/lib/waveform.js';
 import {
     displayedPlaybackUs,
+    osdFillWidth,
     playbackNeedsResync,
     progressFillWidth,
 } from '../src/lib/utils.js';
@@ -101,6 +102,10 @@ assert(progressFillWidth(0.125, 320) === 40, 'seek fill advances before playback
 assert(progressFillWidth(1, 148) === 148,
     'OSD level fill reaches the entire allocated rail at 100%');
 assert(progressFillWidth(1.4, 320) === 320, 'seek fill is capped at rail width');
+assert(osdFillWidth(0, 148) === 0, 'OSD level zero leaves the allocated rail empty');
+assert(osdFillWidth(1, 148) === 148,
+    'OSD level one fills the complete allocated rail, independent of percent text');
+assert(osdFillWidth(1, 0) === 0, 'OSD level respects an empty rail allocation');
 
 assert(Geometry.mediaExpanded.width === 344, 'expanded media has compact player width');
 assert(Geometry.mediaExpanded.height === 84, 'expanded media avoids an empty lower panel');

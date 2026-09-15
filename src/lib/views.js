@@ -20,6 +20,7 @@ import {
     displayedPlaybackUs,
     formatMediaClockUs,
     formatMediaRemainingUs,
+    osdFillWidth,
     playbackNeedsResync,
     progressFillWidth,
 } from './utils.js';
@@ -389,6 +390,7 @@ function levelBar(value) {
         height: 8,
         layout_manager: new Clutter.FixedLayout(),
     });
+    track.clip_to_allocation = true;
     const fill = new St.Widget({
         style_class: 'dynamic-island-level-fill',
         height: 8,
@@ -408,8 +410,9 @@ function levelBar(value) {
     const apply = (next, animate = false) => {
         const n = Math.max(0, Math.min(1, next ?? 0));
         level = n;
-        const width = progressFillWidth(n, track.width);
-        fill.set_position(0, 0);
+        const width = osdFillWidth(n, track.width);
+        const y = Math.max(0, Math.round(((track.height || 8) - 8) / 2));
+        fill.set_position(0, y);
         fill.height = 8;
         fill.remove_all_transitions();
         fill.visible = width > 0;
@@ -425,6 +428,7 @@ function levelBar(value) {
         paint(n);
     };
     track.connect('notify::width', () => apply(level));
+    track.connect('notify::height', () => apply(level));
     track.setLevel = next => apply(next, true);
     apply(level);
     return track;
@@ -962,6 +966,7 @@ export function buildOsdView(payload) {
         y_expand: true,
         y_align: Clutter.ActorAlign.CENTER,
     });
+    root.clip_to_allocation = true;
     root.add_child(glyph);
     if (bar)
         root.add_child(bar);
