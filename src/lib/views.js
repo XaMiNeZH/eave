@@ -1006,6 +1006,31 @@ export function buildChargingView(payload) {
     return root;
 }
 
+function compactStatusView(styleClass, titleText, glyphKind, color) {
+    const title = label(titleText, 'dynamic-island-title', true);
+    const glyph = glyphActor(glyphKind, 16, color);
+    const root = new St.BoxLayout({
+        style_class: styleClass,
+        x_expand: true,
+        y_expand: true,
+        y_align: Clutter.ActorAlign.CENTER,
+    });
+    root.clip_to_allocation = true;
+    root.add_child(title);
+    root.add_child(new St.Widget({x_expand: true, height: 1}));
+    root.add_child(glyph);
+    root.update = next => {
+        if (next?.title)
+            title.text = next.title;
+    };
+    return root;
+}
+
+export function buildScreenshotView(payload) {
+    return compactStatusView('dynamic-island-screenshot',
+        payload?.title || 'Screenshot', Glyph.camera, '#f5f5f7');
+}
+
 export function buildBluetoothView(payload) {
     const title = label(payload?.name ? payload.name : 'Connected', 'dynamic-island-title');
     const sub = label('Bluetooth', 'dynamic-island-subtitle');
@@ -1107,6 +1132,8 @@ export function buildView(activity, clockText) {
         return buildOsdView({...payload, kind});
     case Kind.CHARGING:
         return buildChargingView(payload);
+    case Kind.SCREENSHOT:
+        return buildScreenshotView(payload);
     case Kind.BLUETOOTH:
         return buildBluetoothView(payload);
     case Kind.PRIVACY:

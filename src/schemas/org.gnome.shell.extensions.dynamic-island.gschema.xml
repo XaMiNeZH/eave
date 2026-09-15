@@ -26,6 +26,11 @@
       <default>true</default>
       <summary>Microphone, camera, and recording</summary>
     </key>
+    <key name="enable-screenshot" type="b">
+      <default>true</default>
+      <summary>Screenshot started</summary>
+      <description>Show a compact confirmation when the GNOME Shell screenshot UI starts. Screencast stays on the recording face. Does not capture pixels.</description>
+    </key>
     <key name="show-seconds" type="b">
       <default>false</default>
       <summary>Show seconds on the idle clock</summary>
