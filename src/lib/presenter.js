@@ -3,6 +3,7 @@
 import GLib from 'gi://GLib';
 
 import {Kind} from './activity-stack.js';
+import {CallState} from './call.js';
 import {geometryFor} from './constants.js';
 import {openDateMenu} from './clock.js';
 import {activityKey} from './motion.js';
@@ -46,6 +47,13 @@ export class Presenter {
 
         if (cur.kind === Kind.MEDIA || cur.kind === Kind.RECORDING) {
             this._stack.toggleExpanded();
+            return;
+        }
+
+        if (cur.kind === Kind.CALL) {
+            if (cur.payload?.state === CallState.INCOMING ||
+                cur.payload?.state === CallState.WAITING)
+                cur.payload.accept?.();
             return;
         }
 

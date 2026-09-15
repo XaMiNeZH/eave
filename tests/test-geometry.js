@@ -50,6 +50,8 @@ assert(charging.compact === true, 'charging stays compact');
 assert(charging.height === idle.height, 'charging height matches idle after fit');
 assert(charging.radius === idle.radius, 'charging keeps a stadium radius after fit');
 assert(charging.width > idle.width, 'charging is wider than the idle notch');
+assert(geometryFor('call').width === Geometry.charging.width, 'calls match charging width');
+assert(!isExpandedGeometry(geometryFor('call')), 'calls stay a compact pill');
 
 const osd = fitGeometryToPanel(geometryFor('volume'), 32);
 assert(osd.height === idle.height, 'osd height matches idle after fit');

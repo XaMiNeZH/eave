@@ -26,6 +26,11 @@
       <default>true</default>
       <summary>Microphone, camera, and recording</summary>
     </key>
+    <key name="enable-calls" type="b">
+      <default>true</default>
+      <summary>GNOME Calls</summary>
+      <description>Show a compact pill for live org.gnome.Calls objects. Does not invent meeting or VoIP status.</description>
+    </key>
     <key name="show-seconds" type="b">
       <default>false</default>
       <summary>Show seconds on the idle clock</summary>

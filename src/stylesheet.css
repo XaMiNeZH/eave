@@ -314,6 +314,16 @@
     spacing: 6px;
 }
 
+.dynamic-island-call {
+    spacing: 0;
+    min-width: 0;
+}
+
+.dynamic-island-call .dynamic-island-title,
+.dynamic-island-call .dynamic-island-subtitle {
+    min-width: 0;
+}
+
 .dynamic-island-charging-percent {
     font-weight: 600;
     font-size: 15px;

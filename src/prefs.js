@@ -79,6 +79,7 @@ export default class DynamicIslandPreferences extends ExtensionPreferences {
         group.add(this._switch(settings, 'enable-battery', _('Charging'), null));
         group.add(this._switch(settings, 'enable-bluetooth', _('Bluetooth connected'), null));
         group.add(this._switch(settings, 'enable-privacy', _('Microphone, camera, and screen recording'), null));
+        group.add(this._switch(settings, 'enable-calls', _('Phone calls (GNOME Calls)'), null));
         page.add(group);
         return page;
     }
