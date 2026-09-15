@@ -962,6 +962,7 @@ export function buildOsdView(payload) {
         y_expand: true,
         y_align: Clutter.ActorAlign.CENTER,
     });
+    root.clip_to_allocation = true;
     root.add_child(glyph);
     if (bar)
         root.add_child(bar);
@@ -996,6 +997,7 @@ export function buildChargingView(payload) {
         y_expand: true,
         y_align: Clutter.ActorAlign.CENTER,
     });
+    root.clip_to_allocation = true;
     root.add_child(title);
     root.add_child(new St.Widget({x_expand: true, height: 1}));
     root.add_child(trailing);
@@ -1007,13 +1009,15 @@ export function buildChargingView(payload) {
 }
 
 export function buildBluetoothView(payload) {
-    const title = label(payload?.name ? payload.name : 'Connected', 'dynamic-island-title');
-    const sub = label('Bluetooth', 'dynamic-island-subtitle');
+    const title = label(payload?.name ? payload.name : 'Connected', 'dynamic-island-title', true);
+    const sub = label('Bluetooth', 'dynamic-island-subtitle', true);
     const textCol = new St.BoxLayout({
         vertical: true,
         y_align: Clutter.ActorAlign.CENTER,
+        x_expand: true,
         style_class: 'dynamic-island-text-col',
     });
+    textCol.clip_to_allocation = true;
     textCol.add_child(title);
     textCol.add_child(sub);
     const root = new St.BoxLayout({
@@ -1022,6 +1026,7 @@ export function buildBluetoothView(payload) {
         y_expand: true,
         y_align: Clutter.ActorAlign.CENTER,
     });
+    root.clip_to_allocation = true;
     root.add_child(glyphActor(Glyph.bluetooth, 18));
     root.add_child(textCol);
     return root;
@@ -1035,6 +1040,7 @@ export function buildPrivacyView(payload) {
         ? glyphActor(Glyph.mic, 14)
         : new St.Widget({width: 1, height: 1});
     const root = splitChrome({leading: cam, trailing: mic});
+    root.clip_to_allocation = true;
     root.update = next => {
         root.leading.replace(next?.camera
             ? glyphActor(Glyph.camera, 14)
@@ -1062,6 +1068,7 @@ export function buildRecordingView(payload, _clockText, expanded) {
             x_align: Clutter.ActorAlign.CENTER,
             y_align: Clutter.ActorAlign.CENTER,
         });
+        root.clip_to_allocation = true;
         root.add_child(glyphActor(Glyph.record, 16));
         root.add_child(title);
         root.update = next => {
@@ -1084,6 +1091,7 @@ export function buildRecordingView(payload, _clockText, expanded) {
     const rec = label(recText, 'dynamic-island-rec-time');
     const root = splitChrome({leading: dot, trailing: rec});
     root.add_style_class_name('dynamic-island-recording');
+    root.clip_to_allocation = true;
     root.update = next => {
         if (next?.seconds != null) {
             const minutes = Math.floor(next.seconds / 60);
