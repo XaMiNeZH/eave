@@ -1,8 +1,58 @@
 (() => {
+  document.documentElement.classList.add("js-ready");
+
   const island = document.getElementById("island");
   const hint = document.getElementById("island-hint");
+  const hintCopy = hint?.querySelector(".hint-copy");
   const desktop = island?.closest(".desktop");
   const nav = document.querySelector(".nav");
+  const wallpaper = document.getElementById("demo-wallpaper");
+  const stage = document.getElementById("demo-stage");
+  const muteBtn = document.getElementById("demo-mute");
+  const clockEl = document.getElementById("panel-clock");
+  const reduceMq = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const reduce = () => reduceMq.matches;
+
+  const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  const pad = n => String(n).padStart(2, "0");
+  const tickClock = () => {
+    if (!clockEl)
+      return;
+    const now = new Date();
+    clockEl.innerHTML = `${days[now.getDay()]} ${now.getDate()}&ensp;${pad(now.getHours())}:${pad(now.getMinutes())}`;
+  };
+  tickClock();
+  window.setInterval(tickClock, 15000);
+
+  const reveal = () => {
+    const nodes = document.querySelectorAll("[data-reveal]");
+    if (reduce()) {
+      nodes.forEach(node => node.classList.add("is-in"));
+      return;
+    }
+    const io = new IntersectionObserver(entries => {
+      for (const entry of entries) {
+        if (!entry.isIntersecting)
+          continue;
+        entry.target.classList.add("is-in");
+        io.unobserve(entry.target);
+      }
+    }, {threshold: 0.14, rootMargin: "0px 0px -8% 0px"});
+    nodes.forEach(node => io.observe(node));
+  };
+  reveal();
+
+  const onScroll = () => {
+    if (nav)
+      nav.classList.toggle("is-stuck", window.scrollY > 12);
+    if (wallpaper && !reduce()) {
+      const y = Math.min(Math.max(window.scrollY, 0), 720);
+      wallpaper.style.transform = `translate3d(0, ${y * 0.16}px, 0) scale(1.06)`;
+    }
+  };
+  onScroll();
+  window.addEventListener("scroll", onScroll, {passive: true});
+
   if (!island)
     return;
 
@@ -19,16 +69,30 @@
 
   let i = 0;
   let timer = 0;
-  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
+  let inView = true;
+  let muted = false;
+  let heard = false;
   const bed = createDemoBed();
 
   const hintFor = (state, playing) => {
     if (playing && mediaStates.has(state.id))
-      return ` ${state.label}. Quiet demo loop.`;
+      return "Media · quiet demo loop.";
     if (state.id === "media")
-      return ` ${state.label}. Click to expand (plays a demo loop).`;
-    return ` ${state.label}. Click to morph.`;
+      return "Media · compact. Click to expand (plays a demo loop).";
+    return `${state.label}. Click to morph.`;
+  };
+
+  const syncMute = () => {
+    if (!muteBtn)
+      return;
+    const playing = bed.playing();
+    const show = heard && (playing || (muted && mediaStates.has(states[i].id)));
+    muteBtn.hidden = !show;
+    muteBtn.setAttribute("aria-pressed", muted ? "true" : "false");
+    muteBtn.setAttribute("aria-label", muted ? "Unmute demo" : "Mute demo");
+    const label = muteBtn.querySelector(".mute-label");
+    if (label)
+      label.textContent = muted ? "Unmute" : "Mute";
   };
 
   const show = (next, {fromUser = false} = {}) => {
@@ -40,53 +104,96 @@
     island.setAttribute("aria-label", `Eave preview: ${state.label}. Click to morph.`);
 
     if (mediaStates.has(state.id)) {
-      if (fromUser)
+      if (fromUser && !muted) {
+        heard = true;
         bed.start();
+      }
     } else {
       bed.stop();
     }
 
-    island.dataset.audio = bed.playing() ? "on" : "off";
-    if (hint)
-      hint.lastChild.textContent = hintFor(state, bed.playing());
+    island.dataset.audio = bed.playing() ? "on" : (muted ? "muted" : "off");
+    if (hintCopy)
+      hintCopy.textContent = hintFor(state, bed.playing());
+    syncMute();
   };
 
   const arm = () => {
-    if (reduce)
+    if (reduce())
       return;
     window.clearInterval(timer);
-    timer = window.setInterval(() => show(i + 1), 4200);
+    timer = window.setInterval(() => {
+      if (!inView || document.hidden)
+        return;
+      show(i + 1);
+    }, 5200);
   };
 
-  island.addEventListener("click", () => {
-    show(i + 1, {fromUser: true});
+  const step = fromUser => {
+    show(i + 1, {fromUser});
     arm();
-  });
+  };
 
+  island.addEventListener("click", () => step(true));
   island.addEventListener("keydown", event => {
     if (event.key === "Enter" || event.key === " ") {
       event.preventDefault();
-      show(i + 1, {fromUser: true});
-      arm();
+      step(true);
     }
   });
+
+  island.addEventListener("pointermove", event => {
+    if (reduce())
+      return;
+    const box = island.getBoundingClientRect();
+    island.style.setProperty("--gx", `${event.clientX - box.left}px`);
+    island.style.setProperty("--gy", `${event.clientY - box.top}px`);
+  });
+
+  if (muteBtn) {
+    muteBtn.addEventListener("click", event => {
+      event.preventDefault();
+      muted = !muted;
+      if (muted)
+        bed.stop();
+      else if (mediaStates.has(states[i].id))
+        bed.start();
+      island.dataset.audio = bed.playing() ? "on" : "muted";
+      if (hintCopy)
+        hintCopy.textContent = hintFor(states[i], bed.playing());
+      syncMute();
+    });
+  }
 
   document.addEventListener("visibilitychange", () => {
     if (document.hidden)
       bed.stop();
-    island.dataset.audio = bed.playing() ? "on" : "off";
+    island.dataset.audio = bed.playing() ? "on" : (muted ? "muted" : "off");
+    syncMute();
   });
 
-  if (!reduce)
+  if (stage && "IntersectionObserver" in window) {
+    const stageIo = new IntersectionObserver(entries => {
+      inView = entries.some(entry => entry.isIntersecting && entry.intersectionRatio > 0.2);
+      if (!inView)
+        bed.stop();
+    }, {threshold: [0, 0.2, 0.5]});
+    stageIo.observe(stage);
+  }
+
+  if (!reduce())
     arm();
 
-  const onScroll = () => {
-    if (!nav)
-      return;
-    nav.classList.toggle("is-stuck", window.scrollY > 12);
-  };
-  onScroll();
-  window.addEventListener("scroll", onScroll, {passive: true});
+  reduceMq.addEventListener("change", () => {
+    if (reduce()) {
+      window.clearInterval(timer);
+      document.querySelectorAll("[data-reveal]").forEach(node => node.classList.add("is-in"));
+      if (wallpaper)
+        wallpaper.style.transform = "";
+    } else {
+      arm();
+    }
+  });
 
   function createDemoBed() {
     const AudioCtx = window.AudioContext || window.webkitAudioContext;
@@ -94,7 +201,7 @@
     let master = null;
     let filter = null;
     let active = false;
-    let step = 0;
+    let stepIndex = 0;
     let clock = 0;
     const voices = [];
 
@@ -197,15 +304,15 @@
       const horizon = ctx.currentTime + 0.35;
       while (clock < horizon) {
         const at = clock;
-        if (step % 8 === 0)
+        if (stepIndex % 8 === 0)
           kick(at);
-        if (step % 2 === 0)
+        if (stepIndex % 2 === 0)
           hat(at);
-        const freq = melody[step % melody.length];
+        const freq = melody[stepIndex % melody.length];
         tone(freq, "triangle", 0.055, 0.01, 0.08, 0.28, at, filter);
         tone(freq * 2, "sine", 0.018, 0.01, 0.05, 0.22, at, filter);
         clock += stepSec;
-        step += 1;
+        stepIndex += 1;
       }
       timerId();
     };
@@ -223,7 +330,7 @@
         if (!ensure())
           return;
         active = true;
-        step = 0;
+        stepIndex = 0;
         clock = ctx.currentTime + 0.05;
         startPads();
         const resume = ctx.state === "suspended" ? ctx.resume() : Promise.resolve();
