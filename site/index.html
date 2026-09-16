@@ -114,17 +114,19 @@
               </span>
             </button>
             <div class="wallpaper" id="demo-wallpaper"></div>
-            <button type="button" class="demo-mute" id="demo-mute" hidden aria-pressed="false" aria-label="Mute demo">
-              <svg class="mute-on" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M4 9v6h4l5 4V5L8 9H4zm11.5 3a3.5 3.5 0 0 0-1.8-3.1v6.2A3.5 3.5 0 0 0 15.5 12zM14 5.2v1.6a6.5 6.5 0 0 1 0 10.4v1.6a8.1 8.1 0 0 0 0-13.6z"/></svg>
-              <svg class="mute-off" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M4 9v6h4l5 4V5L8 9H4zm12.1 1.2 1.4-1.4 1.4 1.4 1.4-1.4 1.4 1.4-1.4 1.4 1.4 1.4-1.4 1.4-1.4-1.4-1.4 1.4-1.4-1.4 1.4-1.4-1.4-1.4z"/></svg>
-              <span class="mute-label">Mute</span>
-            </button>
           </div>
         </div>
-        <p class="hint" id="island-hint">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M5.2 4.1c-.3-1.2 1.1-2 2-1.3L19.4 13c1 .8.5 2.4-.8 2.5l-5.1.1a1.4 1.4 0 0 0-1.2.7l-2.6 4.3c-.7 1.1-2.4.7-2.6-.6L5.2 4.1Z"/></svg>
-          <span class="hint-copy">Click the island. It morphs.</span>
-        </p>
+        <div class="stage-caption">
+          <p class="hint" id="island-hint">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M5.2 4.1c-.3-1.2 1.1-2 2-1.3L19.4 13c1 .8.5 2.4-.8 2.5l-5.1.1a1.4 1.4 0 0 0-1.2.7l-2.6 4.3c-.7 1.1-2.4.7-2.6-.6L5.2 4.1Z"/></svg>
+            <span class="hint-copy">Click the island. It morphs.</span>
+          </p>
+          <button type="button" class="demo-mute" id="demo-mute" hidden aria-pressed="false" aria-label="Mute demo">
+            <svg class="mute-on" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M4 9v6h4l5 4V5L8 9H4zm11.5 3a3.5 3.5 0 0 0-1.8-3.1v6.2A3.5 3.5 0 0 0 15.5 12zM14 5.2v1.6a6.5 6.5 0 0 1 0 10.4v1.6a8.1 8.1 0 0 0 0-13.6z"/></svg>
+            <svg class="mute-off" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M4 9v6h4l5 4V5L8 9H4zm12.1 1.2 1.4-1.4 1.4 1.4 1.4-1.4 1.4 1.4-1.4 1.4 1.4 1.4-1.4 1.4-1.4-1.4-1.4 1.4-1.4-1.4 1.4-1.4-1.4-1.4z"/></svg>
+            <span class="mute-label">Mute</span>
+          </button>
+        </div>
       </div>
     </section>
 

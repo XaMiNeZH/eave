@@ -85,9 +85,7 @@
   const syncMute = () => {
     if (!muteBtn)
       return;
-    const playing = bed.playing();
-    const show = heard && (playing || (muted && mediaStates.has(states[i].id)));
-    muteBtn.hidden = !show;
+    muteBtn.hidden = !heard;
     muteBtn.setAttribute("aria-pressed", muted ? "true" : "false");
     muteBtn.setAttribute("aria-label", muted ? "Unmute demo" : "Mute demo");
     const label = muteBtn.querySelector(".mute-label");
