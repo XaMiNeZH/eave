@@ -300,6 +300,45 @@
 
 .dynamic-island-media-expanded {
     spacing: 10px;
+    min-width: 0;
+}
+
+.dynamic-island-media-left {
+    spacing: 5px;
+    min-width: 0;
+}
+
+.dynamic-island-media-volume {
+    spacing: 2px;
+    min-width: 22px;
+}
+
+.dynamic-island-icon-button.is-volume-mute {
+    width: 22px;
+    height: 18px;
+    min-width: 22px;
+    min-height: 18px;
+    border-radius: 9px;
+    padding: 1px;
+}
+
+.dynamic-island-volume {
+    width: 8px;
+    min-width: 8px;
+    height: 32px;
+    min-height: 32px;
+}
+
+.dynamic-island-volume .dynamic-island-seek-rail {
+    background-color: rgba(255, 255, 255, 0.24);
+    border-radius: 2px;
+    width: 3px;
+}
+
+.dynamic-island-volume .dynamic-island-seek-fill {
+    background-color: #ffffff;
+    border-radius: 2px;
+    width: 3px;
 }
 
 .dynamic-island-system {

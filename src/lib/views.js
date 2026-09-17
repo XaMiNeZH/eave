@@ -13,6 +13,7 @@ import {
     mediaPlayGlyph,
     osdGlyph,
     paintGlyph,
+    volumeGlyph,
 } from './glyphs.js';
 import {requestPalette} from './palette-load.js';
 import {FALLBACK_PALETTE, mixHex} from './palette.js';
@@ -183,23 +184,26 @@ function artClip(url, size, radius = null) {
     return clip;
 }
 
-function fractionFromEvent(actor, event) {
-    let x = 0;
+function fractionFromEvent(actor, event, vertical = false) {
+    let coordinate = 0;
     try {
         const coords = event.get_coords();
-        x = coords[coords.length - 2] ?? coords[0] ?? 0;
+        coordinate = vertical
+            ? (coords[coords.length - 1] ?? coords[1] ?? 0)
+            : (coords[coords.length - 2] ?? coords[0] ?? 0);
     } catch {
         return null;
     }
     let origin = 0;
     try {
         const pos = actor.get_transformed_position();
-        origin = pos?.[0] ?? 0;
+        origin = vertical ? (pos?.[1] ?? 0) : (pos?.[0] ?? 0);
     } catch {
         origin = 0;
     }
-    const width = Math.max(1, actor.width || 1);
-    return Math.max(0, Math.min(1, (x - origin) / width));
+    const length = Math.max(1, vertical ? (actor.height || 1) : (actor.width || 1));
+    const fraction = (coordinate - origin) / length;
+    return Math.max(0, Math.min(1, vertical ? 1 - fraction : fraction));
 }
 
 function isPrimaryPress(event) {
@@ -235,18 +239,20 @@ function disconnectStage(id) {
     }
 }
 
-function dragBar(styleClass, fraction, {onCommit, onPreview} = {}) {
+function dragBar(styleClass, fraction, {onCommit, onPreview, vertical = false} = {}) {
     const pct = Math.max(0, Math.min(1, fraction ?? 0));
     const track = new St.Widget({
         style_class: `dynamic-island-slider ${styleClass}`.trim(),
         reactive: true,
         track_hover: true,
-        x_expand: true,
-        y_expand: false,
+        x_expand: !vertical,
+        y_expand: vertical,
         y_align: Clutter.ActorAlign.CENTER,
-        height: 8,
+        height: vertical ? 32 : 8,
         layout_manager: new Clutter.FixedLayout(),
     });
+    if (vertical)
+        track.width = 8;
     const rail = new St.Widget({
         style_class: 'dynamic-island-seek-rail',
         height: 3,
@@ -266,7 +272,16 @@ function dragBar(styleClass, fraction, {onCommit, onPreview} = {}) {
     let capturedId = 0;
     let last = pct;
 
-    const railWidth = () => {
+    const railLength = () => {
+        if (vertical) {
+            const height = Math.max(0, track.height || 0);
+            const x = Math.max(0, Math.round((track.width - 3) / 2));
+            rail.set_position(x, 0);
+            rail.set_size(3, height);
+            fill.set_position(x, height);
+            fill.width = 3;
+            return height;
+        }
         const width = Math.max(0, track.width || 0);
         const y = Math.max(0, Math.round((track.height - 3) / 2));
         rail.set_position(0, y);
@@ -279,18 +294,32 @@ function dragBar(styleClass, fraction, {onCommit, onPreview} = {}) {
     const apply = (next, animate) => {
         const n = Math.max(0, Math.min(1, next ?? 0));
         last = n;
-        const width = progressFillWidth(n, railWidth());
+        const length = progressFillWidth(n, railLength());
         fill.remove_all_transitions();
-        fill.visible = width > 0;
-        if (animate && width > 0) {
+        fill.visible = length > 0;
+        if (vertical) {
+            const y = Math.max(0, (track.height || 0) - length);
+            fill.set_position(Math.max(0, Math.round((track.width - 3) / 2)), y);
+            if (animate && length > 0) {
+                fill.ease({
+                    height: length,
+                    duration: 120,
+                    mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+                });
+            } else {
+                fill.height = length;
+            }
+            return n;
+        }
+        if (animate && length > 0) {
             fill.ease({
-                width,
+                width: length,
                 duration: 120,
                 mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             });
             return n;
         }
-        fill.width = width;
+        fill.width = length;
         return n;
     };
 
@@ -304,13 +333,13 @@ function dragBar(styleClass, fraction, {onCommit, onPreview} = {}) {
             return;
         dragging = false;
         stopCapture();
-        const next = event ? fractionFromEvent(track, event) : null;
+        const next = event ? fractionFromEvent(track, event, vertical) : null;
         const n = apply(next ?? last, false);
         onCommit?.(n);
     };
 
     const preview = (event, animate = false) => {
-        const next = fractionFromEvent(track, event);
+        const next = fractionFromEvent(track, event, vertical);
         if (next == null)
             return;
         apply(next, animate);
@@ -428,6 +457,68 @@ function levelBar(value) {
     track.setLevel = next => apply(next, true);
     apply(level);
     return track;
+}
+
+function mediaVolumeControl(volume) {
+    let state = volume;
+    const root = new St.BoxLayout({
+        style_class: 'dynamic-island-media-volume',
+        vertical: true,
+        width: 22,
+        y_align: Clutter.ActorAlign.CENTER,
+        x_align: Clutter.ActorAlign.CENTER,
+    });
+    const mute = glyphButton(
+        volumeGlyph(volume?.muted ? 0 : volume?.level),
+        () => state?.toggleMuted?.(),
+        'is-volume-mute',
+        13);
+    mute.accessible_name = 'Mute output';
+    mute._dynamicIslandControl = true;
+    const slider = dragBar('dynamic-island-volume', volume?.level ?? 0, {
+        vertical: true,
+        onPreview: next => state?.setLevel?.(next),
+        onCommit: next => state?.setLevel?.(next),
+    });
+    root._dynamicIslandControl = true;
+    slider._dynamicIslandControl = true;
+
+    slider.connect('scroll-event', (_actor, event) => {
+        let delta = 0;
+        try {
+            const [, dy] = event.get_scroll_delta();
+            delta = -Math.sign(dy);
+        } catch {
+            // Discrete scroll events below provide the same adjustment.
+        }
+        if (!delta) {
+            try {
+                const direction = event.get_scroll_direction();
+                if (direction === Clutter.ScrollDirection.UP)
+                    delta = 1;
+                else if (direction === Clutter.ScrollDirection.DOWN)
+                    delta = -1;
+            } catch {
+                // The event has no usable scroll direction.
+            }
+        }
+        if (!delta)
+            return Clutter.EVENT_STOP;
+        const next = Math.max(0, Math.min(1, (state?.level ?? 0) + delta * 0.05));
+        slider.setLevel(next, false);
+        state?.setLevel?.(next);
+        return Clutter.EVENT_STOP;
+    });
+
+    root.add_child(mute);
+    root.add_child(slider);
+    root.update = next => {
+        state = next;
+        mute.setGlyph(volumeGlyph(next?.muted ? 0 : next?.level));
+        if (!slider.dragging)
+            slider.setLevel(next?.level ?? 0, false);
+    };
+    return root;
 }
 
 function equalizer(playing, options = {}) {
@@ -751,6 +842,32 @@ export function buildMediaExpanded(payload) {
     root._payload = payload;
     root.suppressHoverScale = true;
 
+    const left = new St.BoxLayout({
+        style_class: 'dynamic-island-media-left',
+        y_align: Clutter.ActorAlign.CENTER,
+    });
+    left.clip_to_allocation = true;
+    const volumeSlot = new St.Bin({
+        y_expand: true,
+        y_align: Clutter.ActorAlign.CENTER,
+    });
+    let volumeControl = null;
+    const setVolume = volume => {
+        if (!volume?.available) {
+            volumeSlot.visible = false;
+            return;
+        }
+        if (!volumeControl) {
+            volumeControl = mediaVolumeControl(volume);
+            volumeSlot.set_child(volumeControl);
+        } else {
+            volumeControl.update(volume);
+        }
+        volumeSlot.visible = true;
+    };
+    setVolume(payload?.volume);
+    left.add_child(volumeSlot);
+
     const artGlow = new St.Bin({
         style_class: 'dynamic-island-art-glow',
         y_align: Clutter.ActorAlign.CENTER,
@@ -758,7 +875,8 @@ export function buildMediaExpanded(payload) {
     const art = artClip(payload?.artUrl, 52, 11);
     art.setMedia(payload);
     artGlow.set_child(art);
-    root.add_child(artGlow);
+    left.add_child(artGlow);
+    root.add_child(left);
 
     const col = new St.BoxLayout({
         vertical: true,
@@ -918,6 +1036,7 @@ export function buildMediaExpanded(payload) {
     root.update = data => {
         root._payload = data;
         art.setMedia(data);
+        setVolume(data?.volume);
         title.setText(data?.title || 'Not playing');
         artist.setText(data?.artist || '');
         play.setGlyph(mediaPlayGlyph(data?.playing === true));

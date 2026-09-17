@@ -19,6 +19,7 @@ test:
 	gjs --module tests/test-glyphs.js
 	gjs --module tests/test-media-style.js
 	gjs --module tests/test-control-target.js
+	gjs --module tests/test-volume.js
 	gjs --module tests/test-panel-media.js
 
 check: schemas test

@@ -26,6 +26,14 @@ const seekTrack = {
     has_style_class_name: name => name === 'dynamic-island-seek',
     get_parent: () => capsule,
 };
+const volumeRoot = {
+    has_style_class_name: name => name === 'dynamic-island-media-volume',
+    get_parent: () => capsule,
+};
+const volumeFill = {
+    has_style_class_name: () => false,
+    get_parent: () => volumeRoot,
+};
 const plainContent = {
     get_parent: () => capsule,
 };
@@ -36,6 +44,8 @@ assert(isControlActor(transportGlyph, capsule, actor => actor === transportButto
     'a DrawingArea child resolves to its transport button parent');
 assert(isControlActor(seekTrack, capsule),
     'the seek style class is an island control target');
+assert(isControlActor(volumeFill, capsule),
+    'volume fill clicks walk parents to the media volume control');
 assert(isControlTarget({get_source: () => transportGlyph}, capsule, actor => actor === transportButton),
     'an event from a transport glyph resolves as a control target');
 assert(!isControlActor(plainContent, capsule),

@@ -5,6 +5,7 @@ import GLib from 'gi://GLib';
 
 import {Kind} from '../activity-stack.js';
 import {SourceTracker} from '../utils.js';
+import {VolumeControl} from '../volume.js';
 
 const MPRIS_PREFIX = 'org.mpris.MediaPlayer2.';
 
@@ -295,6 +296,7 @@ export class MprisSource {
         this._settings = settings;
         this._tracker = new SourceTracker();
         this._players = new Map();
+        this._volume = new VolumeControl(() => this._publish());
 
         this._tracker.connect(settings, 'changed::enable-media', () => this._publish());
 
@@ -409,6 +411,7 @@ export class MprisSource {
                 next: () => player.next(),
                 previous: () => player.previous(),
                 seek: frac => player.seekFraction(frac),
+                volume: this._volume.snapshot,
             },
         });
     }
@@ -424,6 +427,8 @@ export class MprisSource {
         for (const player of this._players.values())
             player.destroy();
         this._players.clear();
+        this._volume.destroy();
+        this._volume = null;
         this._tracker.destroy();
         this._stack.remove('media');
         this._stack = null;

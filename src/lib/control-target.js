@@ -3,8 +3,10 @@
 const CONTROL_CLASSES = [
     'dynamic-island-icon-button',
     'is-compact-play',
+    'is-volume-mute',
     'dynamic-island-seek',
     'dynamic-island-slider',
+    'dynamic-island-media-volume',
 ];
 
 function hasControlClass(actor) {
