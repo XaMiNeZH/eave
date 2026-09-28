@@ -25,12 +25,14 @@ import {
     pointInChrome,
 } from './squircle.js';
 import {isControlTarget} from './control-target.js';
+import {eventPoint, swipeIntent} from './swipe.js';
 
 export const Island = GObject.registerClass({
     GTypeName: 'DynamicIslandOverlay',
     Signals: {
         'primary-click': {},
         'secondary-click': {},
+        'swipe': {param_types: [GObject.TYPE_STRING]},
     },
 }, class Island extends GObject.Object {
     _init(extension) {
@@ -89,7 +91,15 @@ export const Island = GObject.registerClass({
         this._layoutActors();
 
         this._capsule.connect('button-press-event', (_actor, event) => this._onPress(event));
+        this._capsule.connect('motion-event', (_actor, event) => this._onCapturedGesture(null, event));
+        this._capsule.connect('button-release-event', (_actor, event) => {
+            if (!this._gesture)
+                return Clutter.EVENT_PROPAGATE;
+            return this._finishGesture(event);
+        });
         this._capsule.connect('notify::hover', () => this._onHover());
+        this._gesture = null;
+        this._gestureCapture = 0;
 
         this._mountChrome();
         this._bindPanel();
@@ -196,13 +206,60 @@ export const Island = GObject.registerClass({
         return isControlTarget(event, this._capsule, actor => actor instanceof St.Button);
     }
 
+    _stopGestureCapture() {
+        if (!this._gestureCapture)
+            return;
+        try {
+            globalThis.global?.stage?.disconnect(this._gestureCapture);
+        } catch {
+            // stage already gone
+        }
+        this._gestureCapture = 0;
+    }
+
+    _finishGesture(event) {
+        const gesture = this._gesture;
+        this._gesture = null;
+        this._stopGestureCapture();
+        if (!gesture)
+            return Clutter.EVENT_PROPAGATE;
+        if (gesture.swiped && gesture.intent) {
+            this.emit('swipe', gesture.intent);
+            return Clutter.EVENT_STOP;
+        }
+        this.emit('primary-click');
+        return Clutter.EVENT_STOP;
+    }
+
+    _onCapturedGesture(_stage, event) {
+        if (!this._gesture)
+            return Clutter.EVENT_PROPAGATE;
+        const type = event.type();
+        if (type === Clutter.EventType.MOTION || type === Clutter.EventType.TOUCH_UPDATE) {
+            const point = eventPoint(event);
+            if (!point)
+                return Clutter.EVENT_STOP;
+            const intent = swipeIntent(point.x - this._gesture.x, point.y - this._gesture.y);
+            if (intent) {
+                this._gesture.swiped = true;
+                this._gesture.intent = intent;
+            }
+            return Clutter.EVENT_STOP;
+        }
+        if (type === Clutter.EventType.BUTTON_RELEASE ||
+            type === Clutter.EventType.TOUCH_END ||
+            type === Clutter.EventType.TOUCH_CANCEL)
+            return this._finishGesture(event);
+        return Clutter.EVENT_PROPAGATE;
+    }
+
     _onPress(event) {
         const controlTarget = this._isControlTarget(event);
         if (!this._eventInChrome(event) && !controlTarget)
             return Clutter.EVENT_PROPAGATE;
 
-        // Let the actual control consume its event; never turn it into an
-        // island-level primary click.
+        // Seek, volume, and other island controls own the pointer. Never
+        // promote those drags into a dismiss/collapse swipe.
         if (controlTarget)
             return Clutter.EVENT_PROPAGATE;
 
@@ -212,7 +269,21 @@ export const Island = GObject.registerClass({
             return Clutter.EVENT_STOP;
         }
         if (button === Clutter.BUTTON_PRIMARY || button === 1) {
-            this.emit('primary-click');
+            const point = eventPoint(event) ?? {x: 0, y: 0};
+            this._gesture = {x: point.x, y: point.y, swiped: false, intent: null};
+            this._stopGestureCapture();
+            try {
+                const stage = globalThis.global?.stage;
+                if (stage)
+                    this._gestureCapture = stage.connect('captured-event',
+                        (_s, captured) => this._onCapturedGesture(_s, captured));
+            } catch {
+                this._gestureCapture = 0;
+            }
+            if (!this._gestureCapture) {
+                this._gesture = null;
+                this.emit('primary-click');
+            }
             return Clutter.EVENT_STOP;
         }
         return Clutter.EVENT_PROPAGATE;
@@ -599,6 +670,8 @@ export const Island = GObject.registerClass({
     }
 
     destroy() {
+        this._gesture = null;
+        this._stopGestureCapture();
         this._stopMorph();
         if (this._monitorsId) {
             Main.layoutManager.disconnect(this._monitorsId);

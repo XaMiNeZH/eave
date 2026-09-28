@@ -6,6 +6,7 @@ import {Kind} from './activity-stack.js';
 import {geometryFor} from './constants.js';
 import {openDateMenu} from './clock.js';
 import {activityKey} from './motion.js';
+import {swipeAction} from './swipe.js';
 import {buildView} from './views.js';
 
 export class Presenter {
@@ -29,6 +30,7 @@ export class Presenter {
 
         this._primaryId = island.connect('primary-click', () => this._onPrimary());
         this._secondaryId = island.connect('secondary-click', () => openDateMenu(this._Main));
+        this._swipeId = island.connect('swipe', (_i, intent) => this._onSwipe(intent));
 
         this._render(stack.current());
     }
@@ -51,6 +53,15 @@ export class Presenter {
 
         if (!cur.persistent)
             this._stack.remove(cur.id);
+    }
+
+    _onSwipe(intent) {
+        const cur = this._stack.current();
+        const action = swipeAction(intent, {kind: cur.kind, expanded: cur.expanded});
+        if (action === 'dismiss' && !cur.persistent)
+            this._stack.remove(cur.id);
+        if (action === 'collapse')
+            this._stack.collapse();
     }
 
     _render(activity) {
@@ -117,8 +128,11 @@ export class Presenter {
             this._island.disconnect(this._primaryId);
         if (this._island && this._secondaryId)
             this._island.disconnect(this._secondaryId);
+        if (this._island && this._swipeId)
+            this._island.disconnect(this._swipeId);
         this._primaryId = 0;
         this._secondaryId = 0;
+        this._swipeId = 0;
         this._view = null;
         this._island = null;
         this._stack = null;
