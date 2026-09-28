@@ -14,6 +14,7 @@ import {BluetoothSource} from './lib/sources/bluetooth.js';
 import {MprisSource} from './lib/sources/mpris.js';
 import {OsdSource} from './lib/sources/osd.js';
 import {PrivacySource} from './lib/sources/privacy.js';
+import {ScreenshotSource} from './lib/sources/screenshot.js';
 
 export default class DynamicIslandExtension extends Extension {
     enable() {
@@ -42,6 +43,7 @@ export default class DynamicIslandExtension extends Extension {
         this._addSource(() => new BatterySource({stack: this._stack, settings: this._settings}));
         this._addSource(() => new BluetoothSource({stack: this._stack, settings: this._settings}));
         this._addSource(() => new PrivacySource({stack: this._stack, settings: this._settings}));
+        this._addSource(() => new ScreenshotSource({stack: this._stack, settings: this._settings}));
 
         this._syncPanelMedia();
         this._mediaPrefId = this._settings.connect('changed::hide-panel-media-controls',
