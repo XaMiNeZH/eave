@@ -26,6 +26,11 @@
       <default>true</default>
       <summary>Microphone, camera, and recording</summary>
     </key>
+    <key name="enable-night-light" type="b">
+      <default>true</default>
+      <summary>Night Light</summary>
+      <description>Show a compact toast when GNOME Night Light turns on or off. Uses Settings Daemon Color when present, otherwise org.gnome.desktop.night-light.</description>
+    </key>
     <key name="show-seconds" type="b">
       <default>false</default>
       <summary>Show seconds on the idle clock</summary>

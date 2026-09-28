@@ -20,6 +20,7 @@ test:
 	gjs --module tests/test-media-style.js
 	gjs --module tests/test-control-target.js
 	gjs --module tests/test-panel-media.js
+	gjs --module tests/test-night-light.js
 
 check: schemas test
 	python3 -c "import json; json.load(open('$(SRC)/metadata.json'))"
