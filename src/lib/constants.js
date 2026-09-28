@@ -8,6 +8,7 @@ export const Geometry = {
     idle: {width: 88, height: 34, radius: 17, compact: true},
     compact: {width: 152, height: 34, radius: 17, compact: true},
     charging: {width: 216, height: 34, radius: 17, compact: true},
+    bluetooth: {width: 216, height: 34, radius: 17, compact: true},
     osd: {width: 272, height: 34, radius: 17, compact: true},
     system: {width: 248, height: 44, radius: 22, compact: false},
     notification: {width: 272, height: 56, radius: 18, compact: false},
@@ -58,10 +59,10 @@ export function geometryFor(kind, expanded = false) {
     case 'charging':
         return Geometry.charging;
     case 'bluetooth':
-        return Geometry.system;
+        return Geometry.bluetooth;
     case 'privacy':
     case 'recording':
-        return expanded ? Geometry.system : Geometry.compact;
+        return Geometry.compact;
     case 'idle':
     default:
         return Geometry.idle;

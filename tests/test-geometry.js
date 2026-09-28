@@ -60,7 +60,16 @@ assert(isExpandedGeometry(system), 'system toast is expanded');
 
 assert(isExpandedGeometry(Geometry.mediaExpanded), 'media expanded is expanded');
 assert(!isExpandedGeometry(geometryFor('privacy', false)), 'privacy compact is not expanded');
-assert(isExpandedGeometry(geometryFor('privacy', true)), 'privacy expanded is expanded');
+assert(!isExpandedGeometry(geometryFor('privacy', true)), 'privacy cannot become a card');
+assert(!isExpandedGeometry(geometryFor('recording', false)), 'recording stays a compact pill');
+assert(!isExpandedGeometry(geometryFor('recording', true)), 'recording does not morph into a system card');
+assert(!isExpandedGeometry(geometryFor('bluetooth')), 'Bluetooth stays a compact pill');
+assert(geometryFor('bluetooth').width === Geometry.charging.width,
+    'Bluetooth uses the wide charging-pill family');
+assert(geometryFor('privacy').height === Geometry.charging.height,
+    'privacy uses the charging-pill height');
+assert(geometryFor('recording').height === Geometry.charging.height,
+    'recording uses the charging-pill height');
 
 assert(compactHeightForPanel(32, 0) === 32, 'zero margin fills a 32px panel');
 assert(compactHeightForPanel(32, 2) === 28, 'custom margin 2 shrinks the pill');

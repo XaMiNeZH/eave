@@ -1007,23 +1007,17 @@ export function buildChargingView(payload) {
 }
 
 export function buildBluetoothView(payload) {
-    const title = label(payload?.name ? payload.name : 'Connected', 'dynamic-island-title');
-    const sub = label('Bluetooth', 'dynamic-island-subtitle');
-    const textCol = new St.BoxLayout({
-        vertical: true,
-        y_align: Clutter.ActorAlign.CENTER,
-        style_class: 'dynamic-island-text-col',
-    });
-    textCol.add_child(title);
-    textCol.add_child(sub);
+    const title = label(payload?.name ? payload.name : 'Connected',
+        'dynamic-island-title', true);
     const root = new St.BoxLayout({
-        style_class: 'dynamic-island-system',
+        style_class: 'dynamic-island-bluetooth',
         x_expand: true,
         y_expand: true,
         y_align: Clutter.ActorAlign.CENTER,
     });
+    root.clip_to_allocation = true;
     root.add_child(glyphActor(Glyph.bluetooth, 18));
-    root.add_child(textCol);
+    root.add_child(title);
     return root;
 }
 
@@ -1035,6 +1029,7 @@ export function buildPrivacyView(payload) {
         ? glyphActor(Glyph.mic, 14)
         : new St.Widget({width: 1, height: 1});
     const root = splitChrome({leading: cam, trailing: mic});
+    root.add_style_class_name('dynamic-island-privacy');
     root.update = next => {
         root.leading.replace(next?.camera
             ? glyphActor(Glyph.camera, 14)
@@ -1046,34 +1041,7 @@ export function buildPrivacyView(payload) {
     return root;
 }
 
-export function buildRecordingView(payload, _clockText, expanded) {
-    if (expanded) {
-        let time = 'Recording';
-        if (payload?.seconds != null) {
-            const minutes = Math.floor(payload.seconds / 60);
-            const seconds = payload.seconds % 60;
-            time = `${minutes}:${String(seconds).padStart(2, '0')}`;
-        }
-        const title = label(time, 'dynamic-island-title');
-        const root = new St.BoxLayout({
-            style_class: 'dynamic-island-recording dynamic-island-system',
-            x_expand: true,
-            y_expand: true,
-            x_align: Clutter.ActorAlign.CENTER,
-            y_align: Clutter.ActorAlign.CENTER,
-        });
-        root.add_child(glyphActor(Glyph.record, 16));
-        root.add_child(title);
-        root.update = next => {
-            if (next?.seconds != null) {
-                const minutes = Math.floor(next.seconds / 60);
-                const seconds = next.seconds % 60;
-                title.text = `${minutes}:${String(seconds).padStart(2, '0')}`;
-            }
-        };
-        return root;
-    }
-
+export function buildRecordingView(payload, _clockText, _expanded) {
     const dot = new St.Widget({style_class: 'dynamic-island-rec-dot', width: 8, height: 8});
     let recText = 'REC';
     if (payload?.seconds != null) {
