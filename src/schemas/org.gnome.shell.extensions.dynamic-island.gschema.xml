@@ -26,6 +26,10 @@
       <default>true</default>
       <summary>Microphone, camera, and recording</summary>
     </key>
+    <key name="enable-focus" type="b">
+      <default>true</default>
+      <summary>Do Not Disturb status</summary>
+    </key>
     <key name="show-seconds" type="b">
       <default>false</default>
       <summary>Show seconds on the idle clock</summary>

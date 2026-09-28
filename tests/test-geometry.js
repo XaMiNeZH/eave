@@ -60,7 +60,11 @@ assert(isExpandedGeometry(system), 'system toast is expanded');
 
 assert(isExpandedGeometry(Geometry.mediaExpanded), 'media expanded is expanded');
 assert(!isExpandedGeometry(geometryFor('privacy', false)), 'privacy compact is not expanded');
-assert(isExpandedGeometry(geometryFor('privacy', true)), 'privacy expanded is expanded');
+assert(!isExpandedGeometry(geometryFor('privacy', true)), 'privacy stays a charging-height pill');
+assert(geometryFor('privacy').width === Geometry.charging.width,
+    'privacy matches the charging pill width');
+assert(geometryFor('focus').width === Geometry.charging.width,
+    'focus matches the charging pill width');
 
 assert(compactHeightForPanel(32, 0) === 32, 'zero margin fills a 32px panel');
 assert(compactHeightForPanel(32, 2) === 28, 'custom margin 2 shrinks the pill');

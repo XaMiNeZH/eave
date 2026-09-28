@@ -11,6 +11,7 @@ import {hidePanelMediaControls, restorePanelMediaControls} from './lib/panel-med
 import {Presenter} from './lib/presenter.js';
 import {BatterySource} from './lib/sources/battery.js';
 import {BluetoothSource} from './lib/sources/bluetooth.js';
+import {FocusSource} from './lib/sources/focus.js';
 import {MprisSource} from './lib/sources/mpris.js';
 import {OsdSource} from './lib/sources/osd.js';
 import {PrivacySource} from './lib/sources/privacy.js';
@@ -42,6 +43,7 @@ export default class DynamicIslandExtension extends Extension {
         this._addSource(() => new BatterySource({stack: this._stack, settings: this._settings}));
         this._addSource(() => new BluetoothSource({stack: this._stack, settings: this._settings}));
         this._addSource(() => new PrivacySource({stack: this._stack, settings: this._settings}));
+        this._addSource(() => new FocusSource({stack: this._stack, settings: this._settings}));
 
         this._syncPanelMedia();
         this._mediaPrefId = this._settings.connect('changed::hide-panel-media-controls',
