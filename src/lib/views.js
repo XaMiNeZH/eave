@@ -7,6 +7,7 @@ import Pango from 'gi://Pango';
 import St from 'gi://St';
 
 import {Kind} from './activity-stack.js';
+import {callHeadline} from './call.js';
 import {typeCss} from './fonts.js';
 import {
     Glyph,
@@ -1006,6 +1007,25 @@ export function buildChargingView(payload) {
     return root;
 }
 
+export function buildCallView(payload) {
+    const title = label(callHeadline(payload), 'dynamic-island-title', true);
+    const glyph = glyphActor(Glyph.phone, 16, '#30d158');
+    const root = new St.BoxLayout({
+        style_class: 'dynamic-island-call',
+        x_expand: true,
+        y_expand: true,
+        y_align: Clutter.ActorAlign.CENTER,
+    });
+    root.clip_to_allocation = true;
+    root.add_child(title);
+    root.add_child(new St.Widget({x_expand: true, height: 1}));
+    root.add_child(glyph);
+    root.update = next => {
+        title.text = callHeadline(next);
+    };
+    return root;
+}
+
 export function buildBluetoothView(payload) {
     const title = label(payload?.name ? payload.name : 'Connected', 'dynamic-island-title');
     const sub = label('Bluetooth', 'dynamic-island-subtitle');
@@ -1107,6 +1127,8 @@ export function buildView(activity, clockText) {
         return buildOsdView({...payload, kind});
     case Kind.CHARGING:
         return buildChargingView(payload);
+    case Kind.CALL:
+        return buildCallView(payload);
     case Kind.BLUETOOTH:
         return buildBluetoothView(payload);
     case Kind.PRIVACY:
