@@ -2,7 +2,7 @@
 
 import GLib from 'gi://GLib';
 
-import {Kind} from './activity-stack.js';
+import {primaryClickAction} from './click.js';
 import {geometryFor} from './constants.js';
 import {openDateMenu} from './clock.js';
 import {activityKey} from './motion.js';
@@ -39,16 +39,15 @@ export class Presenter {
 
     _onPrimary() {
         const cur = this._stack.current();
-        if (cur.kind === Kind.IDLE) {
+        const action = primaryClickAction(cur.kind);
+        if (action === 'bounce') {
             this._island.bounce();
             return;
         }
-
-        if (cur.kind === Kind.MEDIA || cur.kind === Kind.RECORDING) {
+        if (action === 'toggle-expanded') {
             this._stack.toggleExpanded();
             return;
         }
-
         if (!cur.persistent)
             this._stack.remove(cur.id);
     }

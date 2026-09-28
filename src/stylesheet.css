@@ -245,6 +245,7 @@
 
 .dynamic-island-osd {
     spacing: 12px;
+    min-width: 0;
 }
 
 .dynamic-island-level {
@@ -304,10 +305,19 @@
 
 .dynamic-island-system {
     spacing: 6px;
+    min-width: 0;
 }
 
 .dynamic-island-charging {
     spacing: 0;
+    min-width: 0;
+}
+
+.dynamic-island-charging .dynamic-island-title,
+.dynamic-island-system .dynamic-island-title,
+.dynamic-island-system .dynamic-island-subtitle,
+.dynamic-island-recording .dynamic-island-rec-time {
+    min-width: 0;
 }
 
 .dynamic-island-charging-trailing {

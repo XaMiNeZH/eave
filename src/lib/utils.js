@@ -92,13 +92,19 @@ export function themedIconName(icon) {
 
 export function classifyOsd(icon, label) {
     const text = `${themedIconName(icon)} ${label ?? ''}`.toLowerCase();
+    // Airplane / rfkill is not a mute HUD. Leave the stock OSD alone; a
+    // dedicated NetworkManager/Rfkill pill can morph the island instead.
+    if (text.includes('airplane') || text.includes('flight') || text.includes('rfkill'))
+        return null;
     if (text.includes('bright') || text.includes('display-brightness') || text.includes('sun'))
         return 'brightness';
     if (text.includes('mic') || text.includes('audio-input') || text.includes('microphone'))
         return 'mute';
-    if (text.includes('airplane') || text.includes('flight') || text.includes('rfkill'))
-        return 'mute';
-    return 'volume';
+    if (text.includes('audio-volume') || text.includes('audio-speaker') ||
+        text.includes('headphone') || text.includes('volume') || text.includes('speaker'))
+        return 'volume';
+    // Keyboard layout, caps lock, and other Shell OSDs stay native.
+    return null;
 }
 
 export function formatMediaClockUs(us) {

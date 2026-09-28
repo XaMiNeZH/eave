@@ -44,11 +44,19 @@ export class OsdSource {
         this._mgr.show = (...args) => this._onShow(...args);
         if (this._mgr.showOne) {
             this._mgr.showOne = (monitorIndex, icon, label, level, maxLevel) => {
+                if (!classifyOsd(icon, label)) {
+                    this._orig.showOne?.(monitorIndex, icon, label, level, maxLevel);
+                    return;
+                }
                 this._emit(icon, label, level, maxLevel);
             };
         }
         if (this._mgr.showAll) {
             this._mgr.showAll = (icon, label, level, maxLevel) => {
+                if (!classifyOsd(icon, label)) {
+                    this._orig.showAll?.(icon, label, level, maxLevel);
+                    return;
+                }
                 this._emit(icon, label, level, maxLevel);
             };
         }
@@ -63,17 +71,28 @@ export class OsdSource {
     _onShow(...args) {
         // GNOME 49+: show(icon, label, levels)
         // Older:     show(monitorIndex, icon, label, level, maxLevel)
+        let icon;
+        let label;
+        let level;
+        let maxLevel;
         if (args.length >= 3 && args[2] && typeof args[2] === 'object' && !args[2].get_names) {
-            const [icon, label, levels] = args;
+            const levels = args[2];
+            icon = args[0];
+            label = args[1];
             const primary = Main.layoutManager.primaryIndex ?? 0;
             const entry = levels?.[primary] ?? Object.values(levels ?? {})[0] ?? {};
-            this._emit(icon, label, entry.level, entry.maxLevel);
+            level = entry.level;
+            maxLevel = entry.maxLevel;
+        } else {
+            icon = args[1];
+            label = args[2];
+            level = args[3];
+            maxLevel = args[4];
+        }
+        if (!classifyOsd(icon, label)) {
+            this._orig.show?.(...args);
             return;
         }
-        const icon = args[1];
-        const label = args[2];
-        const level = args[3];
-        const maxLevel = args[4];
         this._emit(icon, label, level, maxLevel);
     }
 
@@ -84,6 +103,8 @@ export class OsdSource {
         }
 
         const kindName = classifyOsd(icon, label);
+        if (!kindName)
+            return;
         const kind = kindName === 'brightness'
             ? Kind.BRIGHTNESS
             : kindName === 'mute'
