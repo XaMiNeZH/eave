@@ -26,6 +26,16 @@
       <default>true</default>
       <summary>Microphone, camera, and recording</summary>
     </key>
+    <key name="enable-airplane" type="b">
+      <default>true</default>
+      <summary>Airplane mode</summary>
+      <description>Compact toast when GNOME Rfkill AirplaneMode turns on. Hidden if that D-Bus name is absent.</description>
+    </key>
+    <key name="enable-wifi" type="b">
+      <default>true</default>
+      <summary>Wi-Fi connecting</summary>
+      <description>Compact pill while a NetworkManager Wi-Fi device is associating. Hidden if NetworkManager is absent.</description>
+    </key>
     <key name="show-seconds" type="b">
       <default>false</default>
       <summary>Show seconds on the idle clock</summary>
