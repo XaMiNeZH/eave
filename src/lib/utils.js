@@ -136,6 +136,11 @@ export function progressFillWidth(fraction, trackWidth) {
     return Math.round(pct * Math.max(0, Number(trackWidth) || 0));
 }
 
+/** OSD fill always uses the track allocation, never the percent-label width. */
+export function osdFillWidth(level, allocatedRailWidth) {
+    return progressFillWidth(level, allocatedRailWidth);
+}
+
 export function formatClock(dateTime, {use24h, showSeconds}) {
     if (use24h) {
         return showSeconds

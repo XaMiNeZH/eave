@@ -245,6 +245,8 @@
 
 .dynamic-island-osd {
     spacing: 12px;
+    min-height: 8px;
+    min-width: 0;
 }
 
 .dynamic-island-level {
@@ -254,12 +256,14 @@
     min-width: 132px;
     padding: 0;
     height: 8px;
+    min-height: 8px;
 }
 
 .dynamic-island-level-fill {
     background-color: #ffffff;
     border-radius: 4px;
     height: 8px;
+    min-height: 8px;
 }
 
 .dynamic-island-eq {
