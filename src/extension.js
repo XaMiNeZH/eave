@@ -13,6 +13,7 @@ import {BatterySource} from './lib/sources/battery.js';
 import {BluetoothSource} from './lib/sources/bluetooth.js';
 import {MprisSource} from './lib/sources/mpris.js';
 import {OsdSource} from './lib/sources/osd.js';
+import {PowerProfileSource} from './lib/sources/power-profile.js';
 import {PrivacySource} from './lib/sources/privacy.js';
 
 export default class DynamicIslandExtension extends Extension {
@@ -40,6 +41,7 @@ export default class DynamicIslandExtension extends Extension {
         this._addSource(() => new MprisSource({stack: this._stack, settings: this._settings}));
         this._addSource(() => new OsdSource({stack: this._stack, settings: this._settings}));
         this._addSource(() => new BatterySource({stack: this._stack, settings: this._settings}));
+        this._addSource(() => new PowerProfileSource({stack: this._stack, settings: this._settings}));
         this._addSource(() => new BluetoothSource({stack: this._stack, settings: this._settings}));
         this._addSource(() => new PrivacySource({stack: this._stack, settings: this._settings}));
 

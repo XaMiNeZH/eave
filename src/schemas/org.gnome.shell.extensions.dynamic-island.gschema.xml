@@ -18,6 +18,11 @@
       <default>true</default>
       <summary>Charging events</summary>
     </key>
+    <key name="enable-power-profile" type="b">
+      <default>true</default>
+      <summary>Power profile</summary>
+      <description>Show a compact toast when power-profiles-daemon changes ActiveProfile. Hidden if that D-Bus name is absent.</description>
+    </key>
     <key name="enable-bluetooth" type="b">
       <default>true</default>
       <summary>Bluetooth connect events</summary>
