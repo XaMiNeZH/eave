@@ -26,6 +26,11 @@
       <default>true</default>
       <summary>Microphone, camera, and recording</summary>
     </key>
+    <key name="enable-vpn" type="b">
+      <default>true</default>
+      <summary>VPN connected</summary>
+      <description>Show a compact pill while NetworkManager has an activated VPN or WireGuard connection. Hidden if NetworkManager is not on the bus.</description>
+    </key>
     <key name="show-seconds" type="b">
       <default>false</default>
       <summary>Show seconds on the idle clock</summary>

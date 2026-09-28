@@ -8,6 +8,7 @@ export const Kind = Object.freeze({
     PRIVACY: 'privacy',
     BLUETOOTH: 'bluetooth',
     CHARGING: 'charging',
+    VPN: 'vpn',
     VOLUME: 'volume',
     BRIGHTNESS: 'brightness',
     MUTE: 'mute',
@@ -16,6 +17,7 @@ export const Kind = Object.freeze({
 export const Priority = Object.freeze({
     [Kind.IDLE]: 0,
     [Kind.MEDIA]: 30,
+    [Kind.VPN]: 22,
     [Kind.RECORDING]: 40,
     [Kind.PRIVACY]: 55,
     [Kind.BLUETOOTH]: 60,
