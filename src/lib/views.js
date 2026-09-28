@@ -14,6 +14,7 @@ import {
     osdGlyph,
     paintGlyph,
 } from './glyphs.js';
+import {lowBatteryHeadline} from './low-battery.js';
 import {requestPalette} from './palette-load.js';
 import {FALLBACK_PALETTE, mixHex} from './palette.js';
 import {
@@ -1006,6 +1007,25 @@ export function buildChargingView(payload) {
     return root;
 }
 
+export function buildLowBatteryView(payload) {
+    const title = label(lowBatteryHeadline(payload), 'dynamic-island-title', true);
+    const glyph = glyphActor(Glyph.batteryLow, 18, '#ff453a');
+    const root = new St.BoxLayout({
+        style_class: 'dynamic-island-low-battery',
+        x_expand: true,
+        y_expand: true,
+        y_align: Clutter.ActorAlign.CENTER,
+    });
+    root.clip_to_allocation = true;
+    root.add_child(title);
+    root.add_child(new St.Widget({x_expand: true, height: 1}));
+    root.add_child(glyph);
+    root.update = next => {
+        title.text = lowBatteryHeadline(next);
+    };
+    return root;
+}
+
 export function buildBluetoothView(payload) {
     const title = label(payload?.name ? payload.name : 'Connected', 'dynamic-island-title');
     const sub = label('Bluetooth', 'dynamic-island-subtitle');
@@ -1107,6 +1127,8 @@ export function buildView(activity, clockText) {
         return buildOsdView({...payload, kind});
     case Kind.CHARGING:
         return buildChargingView(payload);
+    case Kind.LOW_BATTERY:
+        return buildLowBatteryView(payload);
     case Kind.BLUETOOTH:
         return buildBluetoothView(payload);
     case Kind.PRIVACY:

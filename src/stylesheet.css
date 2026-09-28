@@ -310,6 +310,16 @@
     spacing: 0;
 }
 
+.dynamic-island-low-battery {
+    spacing: 0;
+    min-width: 0;
+}
+
+.dynamic-island-low-battery .dynamic-island-title {
+    min-width: 0;
+    color: #ff453a;
+}
+
 .dynamic-island-charging-trailing {
     spacing: 6px;
 }
