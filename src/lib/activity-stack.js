@@ -4,6 +4,7 @@
 export const Kind = Object.freeze({
     IDLE: 'idle',
     MEDIA: 'media',
+    FOCUS: 'focus',
     RECORDING: 'recording',
     PRIVACY: 'privacy',
     BLUETOOTH: 'bluetooth',
@@ -16,6 +17,7 @@ export const Kind = Object.freeze({
 export const Priority = Object.freeze({
     [Kind.IDLE]: 0,
     [Kind.MEDIA]: 30,
+    [Kind.FOCUS]: 50,
     [Kind.RECORDING]: 40,
     [Kind.PRIVACY]: 55,
     [Kind.BLUETOOTH]: 60,

@@ -51,6 +51,10 @@ assert(charging.height === idle.height, 'charging height matches idle after fit'
 assert(charging.radius === idle.radius, 'charging keeps a stadium radius after fit');
 assert(charging.width > idle.width, 'charging is wider than the idle notch');
 
+const focus = fitGeometryToPanel(geometryFor('focus'), 32);
+assert(focus.compact === true, 'Focus stays compact');
+assert(focus.width === charging.width, 'Focus shares charging-pill width');
+
 const osd = fitGeometryToPanel(geometryFor('volume'), 32);
 assert(osd.height === idle.height, 'osd height matches idle after fit');
 
@@ -60,7 +64,9 @@ assert(isExpandedGeometry(system), 'system toast is expanded');
 
 assert(isExpandedGeometry(Geometry.mediaExpanded), 'media expanded is expanded');
 assert(!isExpandedGeometry(geometryFor('privacy', false)), 'privacy compact is not expanded');
-assert(isExpandedGeometry(geometryFor('privacy', true)), 'privacy expanded is expanded');
+assert(!isExpandedGeometry(geometryFor('privacy', true)), 'privacy stays compact when clicked');
+assert(geometryFor('privacy').width === Geometry.charging.width,
+    'privacy shares charging-pill geometry');
 
 assert(compactHeightForPanel(32, 0) === 32, 'zero margin fills a 32px panel');
 assert(compactHeightForPanel(32, 2) === 28, 'custom margin 2 shrinks the pill');

@@ -1006,6 +1006,27 @@ export function buildChargingView(payload) {
     return root;
 }
 
+function buildCompactStatusView(titleText, glyphs, styleClass = '') {
+    const title = label(titleText, 'dynamic-island-title');
+    const trailing = new St.BoxLayout({
+        style_class: 'dynamic-island-status-trailing',
+        y_align: Clutter.ActorAlign.CENTER,
+    });
+    for (const glyph of glyphs)
+        trailing.add_child(glyphActor(glyph, 18));
+
+    const root = new St.BoxLayout({
+        style_class: `dynamic-island-status ${styleClass}`.trim(),
+        x_expand: true,
+        y_expand: true,
+        y_align: Clutter.ActorAlign.CENTER,
+    });
+    root.add_child(title);
+    root.add_child(new St.Widget({x_expand: true, height: 1}));
+    root.add_child(trailing);
+    return root;
+}
+
 export function buildBluetoothView(payload) {
     const title = label(payload?.name ? payload.name : 'Connected', 'dynamic-island-title');
     const sub = label('Bluetooth', 'dynamic-island-subtitle');
@@ -1028,22 +1049,33 @@ export function buildBluetoothView(payload) {
 }
 
 export function buildPrivacyView(payload) {
-    const cam = payload?.camera
-        ? glyphActor(Glyph.camera, 14)
-        : new St.Widget({width: 1, height: 1});
-    const mic = payload?.mic
-        ? glyphActor(Glyph.mic, 14)
-        : new St.Widget({width: 1, height: 1});
-    const root = splitChrome({leading: cam, trailing: mic});
+    const describe = next => {
+        if (next?.mic && next?.camera)
+            return {title: 'Mic & Camera', glyphs: [Glyph.mic, Glyph.camera]};
+        if (next?.camera)
+            return {title: 'Camera in use', glyphs: [Glyph.camera]};
+        return {title: 'Microphone in use', glyphs: [Glyph.mic]};
+    };
+    const current = describe(payload);
+    const root = buildCompactStatusView(current.title, current.glyphs, 'dynamic-island-privacy');
     root.update = next => {
-        root.leading.replace(next?.camera
-            ? glyphActor(Glyph.camera, 14)
-            : new St.Widget({width: 1, height: 1}));
-        root.trailing.replace(next?.mic
-            ? glyphActor(Glyph.mic, 14)
-            : new St.Widget({width: 1, height: 1}));
+        const updated = describe(next);
+        root.destroy_all_children();
+        root.add_child(label(updated.title, 'dynamic-island-title'));
+        root.add_child(new St.Widget({x_expand: true, height: 1}));
+        const trailing = new St.BoxLayout({
+            style_class: 'dynamic-island-status-trailing',
+            y_align: Clutter.ActorAlign.CENTER,
+        });
+        for (const glyph of updated.glyphs)
+            trailing.add_child(glyphActor(glyph, 18));
+        root.add_child(trailing);
     };
     return root;
+}
+
+export function buildFocusView() {
+    return buildCompactStatusView('Focus', [Glyph.focus], 'dynamic-island-focus');
 }
 
 export function buildRecordingView(payload, _clockText, expanded) {
@@ -1107,6 +1139,8 @@ export function buildView(activity, clockText) {
         return buildOsdView({...payload, kind});
     case Kind.CHARGING:
         return buildChargingView(payload);
+    case Kind.FOCUS:
+        return buildFocusView();
     case Kind.BLUETOOTH:
         return buildBluetoothView(payload);
     case Kind.PRIVACY:

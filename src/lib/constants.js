@@ -56,10 +56,12 @@ export function geometryFor(kind, expanded = false) {
     case 'mute':
         return Geometry.osd;
     case 'charging':
+    case 'focus':
         return Geometry.charging;
     case 'bluetooth':
         return Geometry.system;
     case 'privacy':
+        return Geometry.charging;
     case 'recording':
         return expanded ? Geometry.system : Geometry.compact;
     case 'idle':

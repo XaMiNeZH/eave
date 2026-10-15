@@ -310,7 +310,15 @@
     spacing: 0;
 }
 
+.dynamic-island-status {
+    spacing: 0;
+}
+
 .dynamic-island-charging-trailing {
+    spacing: 6px;
+}
+
+.dynamic-island-status-trailing {
     spacing: 6px;
 }
 

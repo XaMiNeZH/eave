@@ -38,6 +38,8 @@ assert(geometryFor('volume').height === geometryFor('idle').height, 'osd stays c
 assert(geometryFor('media', false).width > geometryFor('idle').width, 'compact media is wider');
 assert(geometryFor('charging').compact === true, 'charging stays compact');
 assert(geometryFor('charging').width > geometryFor('idle').width, 'charging is wider than idle');
+assert(geometryFor('focus').compact === true, 'Focus stays compact');
+assert(geometryFor('focus').width === geometryFor('charging').width, 'Focus uses charging pill geometry');
 assert(activityKey({id: 'media', kind: 'media', expanded: false}) === 'media:media:0', 'activity key compact');
 assert(activityKey({id: 'media', kind: 'media', expanded: true}) === 'media:media:1', 'activity key expanded');
 
